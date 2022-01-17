@@ -10,7 +10,7 @@ project(${PROJECT_NAME})
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp std_msgs message_generation rio_control_node)
+find_package(catkin REQUIRED COMPONENTS roscpp std_msgs message_generation rio_control_node action_processor_node)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -106,7 +106,7 @@ catkin_package(
 #  LIBRARIES rio_control_node
 #  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
-  CATKIN_DEPENDS roscpp message_generation message_runtime rio_control_node
+  CATKIN_DEPENDS roscpp message_generation message_runtime rio_control_node action_processor_node
 )
 
 ###########
@@ -210,7 +210,7 @@ file(GLOB_RECURSE test_sources CONFIGURE_DEPENDS
 
 add_executable(${PROJECT_NAME} ${executable_sources})
 target_include_directories(${PROJECT_NAME} PUBLIC "include")
-target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} Threads::Threads)
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} Threads::Threads action_helper)
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 #############
