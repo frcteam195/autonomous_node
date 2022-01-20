@@ -1,2 +1,4 @@
-# Template Node
-This template ROS node is designed as a starting point for creating a standard ROS node.
+# Autonomous Node
+[![CI Build Status](https://github.com/frcteam195/autonomous_node/actions/workflows/main.yml/badge.svg)](https://github.com/frcteam195/autonomous_node/actions/workflows/main.yml)
+---
+This node is reponsible for running autonomous robot control
