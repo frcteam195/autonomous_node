@@ -7,10 +7,18 @@
 
 #include <../../action_processor_node/include/helper/action_helper.hpp>
 
+#include <local_planner_node/PlanReq.h>
+#include <geometry_msgs/PoseStamped.h>
+
+#include <tf2/LinearMath/Quaternion.h>
+
 #define RATE (100)
 
 ros::NodeHandle* node;
 ActionHelper* action_helper;
+
+ros::ServiceClient local_planner_req_client;
+
 
 enum STATE
 {
@@ -26,6 +34,27 @@ void move_forward()
     std::cout << "move fprward\n";
     state = STATE::IDLE;
     timer = 0;
+
+    local_planner_node::PlanReq req;
+    req.request.plan = std::vector<geometry_msgs::PoseStamped>();
+    req.request.frame = local_planner_node::PlanReq::Request::FRAME_BASE;
+
+    geometry_msgs::PoseStamped point;
+    point.pose.position.x = 1.0;
+    point.pose.position.y = 0.0;
+    point.pose.position.z = 0.0;
+
+    tf2::Quaternion Up;
+    Up.setRPY(0,0,0);
+    point.pose.orientation.w = Up.getW();
+    point.pose.orientation.x = Up.getX();
+    point.pose.orientation.y = Up.getY();
+    point.pose.orientation.z = Up.getZ();
+
+    req.request.plan.push_back(point);
+
+    local_planner_req_client.call( req );
+
 }
 
 int main(int argc, char **argv)
@@ -38,6 +67,7 @@ int main(int argc, char **argv)
 
     // listen to move actions
     action_helper = new ActionHelper(node);
+    local_planner_req_client =  node->serviceClient<local_planner_node::PlanReq>("/local_plan_request");
 
     state = STATE::IDLE;
 
@@ -54,7 +84,6 @@ int main(int argc, char **argv)
                 action_helper->update_action( "MoveForward",
                                               ActionHelper::ACTION_STATUS::COMPLETE );
                state = STATE::IDLE;
-               std::cout << "asdasdasd\n\n";
             }
         }
         else
