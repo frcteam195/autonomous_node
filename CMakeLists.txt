@@ -47,5 +47,5 @@ file(GLOB_RECURSE test_sources CONFIGURE_DEPENDS
 
 add_executable(${PROJECT_NAME} ${executable_sources})
 target_include_directories(${PROJECT_NAME} PUBLIC "include")
-target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} Threads::Threads action_helper)
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} Threads::Threads)
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})

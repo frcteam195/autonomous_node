@@ -5,7 +5,7 @@
 #include <string>
 #include <mutex>
 
-#include <../../action_processor_node/include/helper/action_helper.hpp>
+#include <action_helper/action_helper.hpp>
 
 #include <local_planner_node/PlanReq.h>
 #include <geometry_msgs/PoseStamped.h>
