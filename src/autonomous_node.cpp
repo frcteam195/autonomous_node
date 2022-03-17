@@ -136,6 +136,7 @@ int main(int argc, char **argv)
         {
             initialize_position();
         }
+        last_robot_state = robot_state;
 
         //action_helper->step();
 
