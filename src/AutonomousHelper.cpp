@@ -67,10 +67,10 @@ void AutonomousHelper::move_to_position(std::string position, double yaw_rotatio
     point.header.frame_id = position;
     point.pose.position.x = 0.0;
     point.pose.position.y = 0.0;
-    point.pose.position.z = ck::math::deg2rad(yaw_rotation_deg);
+    point.pose.position.z = 0.0;
 
     tf2::Quaternion Up;
-    Up.setRPY(0,0,0);
+    Up.setRPY(0,0,ck::math::deg2rad(yaw_rotation_deg));
     point.pose.orientation.w = Up.getW();
     point.pose.orientation.x = Up.getX();
     point.pose.orientation.y = Up.getY();
