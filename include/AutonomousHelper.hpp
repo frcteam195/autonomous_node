@@ -31,7 +31,7 @@ class AutonomousHelper : public Singleton<AutonomousHelper>
 {
     friend Singleton;
 public:
-    void move_to_position(std::string position);
+    void move_to_position(std::string position, double yaw_rotation_deg = 0);
     void initialize_position();
 
     void setRobotState(RobotState robot_state);

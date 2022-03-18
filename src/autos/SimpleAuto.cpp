@@ -23,7 +23,7 @@ hmi_agent_node::HMI_Signals SimpleAuto::stepStateMachine(bool trajRunning, bool 
     {
         case SimpleAutoStates::BEGIN:
         {
-            AutonomousHelper::getInstance().move_to_position(PATH_1_POINT);
+            AutonomousHelper::getInstance().move_to_position(PATH_1_POINT, 90);
             mNextState = SimpleAutoStates::DRIVE_PATH_1;
             break;
         }
