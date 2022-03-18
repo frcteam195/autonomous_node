@@ -29,6 +29,14 @@ enum RobotState
 
 static RobotState robot_state;
 
+enum AllianceColor
+{
+    RED = 0,
+    BLUE = 1,
+};
+
+static AllianceColor alliance_color;
+
 // ActionHelper* action_helper;
 
 // ros::ServiceClient local_planner_req_client;
@@ -77,7 +85,7 @@ void initialize_position()
     
     robot_localization::SetPose initial_pose;
     initial_pose.request.pose.header.stamp = ros::Time::now();
-    initial_pose.request.pose.header.frame_id = "auto_1_red_link";
+    initial_pose.request.pose.header.frame_id = alliance_color == AllianceColor::RED ? "auto_1_red_link" : "auto_1_blue_link";
     
     initial_pose.request.pose.pose.pose.position.x = 0;
     initial_pose.request.pose.pose.pose.position.y = 0;
@@ -111,6 +119,7 @@ void initialize_position()
 void robot_status_callback (const rio_control_node::Robot_Status &msg)
 {
     robot_state = (RobotState) msg.robot_state;
+    alliance_color = (AllianceColor) msg.alliance;
 }
 
 int main(int argc, char **argv)
@@ -131,12 +140,12 @@ int main(int argc, char **argv)
 
     while( ros::ok() )
     {
-        // static RobotState last_robot_state = RobotState::DISABLED;
-        // if(robot_state == RobotState::AUTONOMOUS && last_robot_state == RobotState::DISABLED)
-        // {
+        static RobotState last_robot_state = RobotState::DISABLED;
+        if(robot_state == RobotState::AUTONOMOUS && last_robot_state == RobotState::DISABLED)
+        {
             initialize_position();
-        // }
-        // last_robot_state = robot_state;
+        }
+        last_robot_state = robot_state;
 
         //action_helper->step();
 
