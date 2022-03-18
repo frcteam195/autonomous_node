@@ -14,6 +14,7 @@
 #include "rio_control_node/Robot_Status.h"
 
 #include <tf2/LinearMath/Quaternion.h>
+#include "ck_utilities/CKMath.hpp"
 
 void AutonomousHelper::initialize_position()
 {
@@ -52,7 +53,7 @@ void AutonomousHelper::initialize_position()
     }
 }
 
-void AutonomousHelper::move_to_position(std::string position)
+void AutonomousHelper::move_to_position(std::string position, double yaw_rotation_deg)
 {
     state = STATE::IDLE;
     timer = 0;
@@ -66,7 +67,7 @@ void AutonomousHelper::move_to_position(std::string position)
     point.header.frame_id = position;
     point.pose.position.x = 0.0;
     point.pose.position.y = 0.0;
-    point.pose.position.z = 0.0;
+    point.pose.position.z = ck::math::deg2rad(yaw_rotation_deg);
 
     tf2::Quaternion Up;
     Up.setRPY(0,0,0);
