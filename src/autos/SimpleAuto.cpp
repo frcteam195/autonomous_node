@@ -2,7 +2,7 @@
 #include "AutonomousHelper.hpp"
 #include <string>
 
-std::string PATH_1_POINT = "red_ball_1";
+std::string PATH_1_POINT = "red_ball_3";
 
 hmi_agent_node::HMI_Signals SimpleAuto::stepStateMachine(bool trajRunning, bool trajCompleted)
 {
