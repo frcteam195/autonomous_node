@@ -98,6 +98,15 @@ int main(int argc, char **argv)
         }
         last_robot_state = AutonomousHelper::getInstance().getRobotState();
 
+        if(AutonomousHelper::getInstance().getRobotState() != RobotState::AUTONOMOUS)
+        {
+            if (autoModePrg)
+            {
+                delete autoModePrg;
+                autoModePrg = nullptr;
+            }
+        }
+
         if (autoModePrg != nullptr)
         {
             auto_hmi_signals = autoModePrg->stepStateMachine(traj_follow_active, traj_follow_complete);
@@ -106,12 +115,6 @@ int main(int argc, char **argv)
 
         ros::spinOnce();
         rate.sleep();
-    }
-
-    if (autoModePrg)
-    {
-        delete autoModePrg;
-        autoModePrg = nullptr;
     }
 
 	return 0;
