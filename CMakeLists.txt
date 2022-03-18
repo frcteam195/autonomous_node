@@ -10,7 +10,9 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   message_generation
   rio_control_node
-  action_processor_node)
+  action_processor_node
+  ck_utilities_node
+)
 
 catkin_package(
 #  INCLUDE_DIRS include
@@ -24,6 +26,7 @@ catkin_package(
   rio_control_node
   action_processor_node
   local_planner_node
+  ck_utilities_node
 )
 
 include_directories(

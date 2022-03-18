@@ -35,6 +35,7 @@
     <depend>roscpp</depend>
     <depend>action_processor_node</depend>
     <depend>local_planner_node</depend>
+    <depend>ck_utilities_node</depend>
   <!--   Note that this is equivalent to the following: -->
   <!--   <build_depend>roscpp</build_depend> -->
   <!--   <exec_depend>roscpp</exec_depend> -->
