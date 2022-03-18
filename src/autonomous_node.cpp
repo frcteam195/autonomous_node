@@ -131,12 +131,12 @@ int main(int argc, char **argv)
 
     while( ros::ok() )
     {
-        static RobotState last_robot_state = RobotState::DISABLED;
-        if(robot_state == RobotState::AUTONOMOUS && last_robot_state == RobotState::DISABLED)
-        {
+        // static RobotState last_robot_state = RobotState::DISABLED;
+        // if(robot_state == RobotState::AUTONOMOUS && last_robot_state == RobotState::DISABLED)
+        // {
             initialize_position();
-        }
-        last_robot_state = robot_state;
+        // }
+        // last_robot_state = robot_state;
 
         //action_helper->step();
 
