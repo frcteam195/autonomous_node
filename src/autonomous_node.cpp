@@ -37,47 +37,48 @@ enum AllianceColor
 
 static AllianceColor alliance_color;
 
-// ActionHelper* action_helper;
+ActionHelper* action_helper;
 
-// ros::ServiceClient local_planner_req_client;
+ros::ServiceClient local_planner_req_client;
 
 
-// enum STATE
-// {
-//     IDLE,
-//     MOVING_FORWARD
-// };
+enum STATE
+{
+    IDLE,
+    MOVING_FORWARD
+};
 
-// enum STATE state;
-// int timer = 0;
+enum STATE state;
+int timer = 0;
 
-// void move_forward()
-// {
-//     std::cout << "move fprward\n";
-//     state = STATE::IDLE;
-//     timer = 0;
+void move_to_position(std::string position)
+{
+    state = STATE::IDLE;
+    timer = 0;
 
-//     local_planner_node::PlanReq req;
-//     req.request.plan = std::vector<geometry_msgs::PoseStamped>();
-//     req.request.frame = local_planner_node::PlanReq::Request::FRAME_BASE;
+    local_planner_node::PlanReq req;
+    req.request.plan = std::vector<geometry_msgs::PoseStamped>();
+    req.request.frame = local_planner_node::PlanReq::Request::FRAME_BASE;
 
-//     geometry_msgs::PoseStamped point;
-//     point.pose.position.x = 1.0;
-//     point.pose.position.y = 0.0;
-//     point.pose.position.z = 0.0;
+    geometry_msgs::PoseStamped point;
+    point.header.stamp = ros::Time::now();
+    point.header.frame_id = position;
+    point.pose.position.x = 0.0;
+    point.pose.position.y = 0.0;
+    point.pose.position.z = 0.0;
 
-//     tf2::Quaternion Up;
-//     Up.setRPY(0,0,0);
-//     point.pose.orientation.w = Up.getW();
-//     point.pose.orientation.x = Up.getX();
-//     point.pose.orientation.y = Up.getY();
-//     point.pose.orientation.z = Up.getZ();
+    tf2::Quaternion Up;
+    Up.setRPY(0,0,0);
+    point.pose.orientation.w = Up.getW();
+    point.pose.orientation.x = Up.getX();
+    point.pose.orientation.y = Up.getY();
+    point.pose.orientation.z = Up.getZ();
 
-//     req.request.plan.push_back(point);
+    req.request.plan.push_back(point);
 
-//     local_planner_req_client.call( req );
+    local_planner_req_client.call( req );
 
-// }
+}
 
 void initialize_position()
 {
