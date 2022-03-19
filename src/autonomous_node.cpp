@@ -16,6 +16,7 @@
 #include "rio_control_node/Robot_Status.h"
 #include "autos/AutoBase.hpp"
 #include "autos/SimpleAuto.hpp"
+#include "autos/DriveBackwardAuto.hpp"
 
 #include <tf2/LinearMath/Quaternion.h>
 
@@ -76,7 +77,7 @@ int main(int argc, char **argv)
             {
                 case 0:
                 {
-                    autoModePrg = new SimpleAuto();
+                    autoModePrg = new DriveBackwardAuto();
                     break;
                 }
                 case 1:
