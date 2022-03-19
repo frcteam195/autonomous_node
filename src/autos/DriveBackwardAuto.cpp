@@ -28,7 +28,7 @@ hmi_agent_node::HMI_Signals DriveBackwardAuto::stepStateMachine(bool trajRunning
         }
         case DriveBackwardAutoStates::DRIVE_BACKWARDS:
         {
-            autoHMISignals.drivetrain_fwd_back = -0.65;
+            autoHMISignals.drivetrain_fwd_back = -0.25;
             if ((ros::Time::now() - time_state_entered) > ros::Duration(0.5))
             {
                 mNextState = DriveBackwardAutoStates::END;
