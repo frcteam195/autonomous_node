@@ -4,11 +4,18 @@
 
 std::string PATH_1_POINT = "red_ball_3";
 
+// #define AUTO_ENABLED
+
 hmi_agent_node::HMI_Signals SimpleAuto::stepStateMachine(bool trajRunning, bool trajCompleted)
 {
+    (void) trajRunning;
+    (void) trajCompleted;
+    
     hmi_agent_node::HMI_Signals autoHMISignals;
+#ifdef AUTO_ENABLED
     autoHMISignals.allow_shoot = true;
     autoHMISignals.intake_rollers = true;
+#endif
 
 
 	static ros::Time time_state_entered = ros::Time::now();
@@ -18,6 +25,8 @@ hmi_agent_node::HMI_Signals SimpleAuto::stepStateMachine(bool trajRunning, bool 
 	}
 
     mAutoState = mNextState;
+
+#ifdef AUTO_ENABLED
 
     switch (mAutoState)
     {
@@ -54,5 +63,6 @@ hmi_agent_node::HMI_Signals SimpleAuto::stepStateMachine(bool trajRunning, bool 
             break;
         }
     }
+#endif
     return autoHMISignals;
 }
