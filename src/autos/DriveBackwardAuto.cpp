@@ -10,6 +10,7 @@ hmi_agent_node::HMI_Signals DriveBackwardAuto::stepStateMachine(bool trajRunning
     hmi_agent_node::HMI_Signals autoHMISignals;
     autoHMISignals.allow_shoot = true;
     autoHMISignals.intake_rollers = true;
+    autoHMISignals.retract_intake = true;
 
 	static ros::Time time_state_entered = ros::Time::now();
 	if(mNextState != mAutoState)
@@ -23,13 +24,16 @@ hmi_agent_node::HMI_Signals DriveBackwardAuto::stepStateMachine(bool trajRunning
     {
         case DriveBackwardAutoStates::BEGIN:
         {
-            mNextState = DriveBackwardAutoStates::DRIVE_BACKWARDS;
+            if ((ros::Time::now() - time_state_entered) > ros::Duration(1.0))
+            {
+                mNextState = DriveBackwardAutoStates::DRIVE_BACKWARDS;
+            }
             break;
         }
         case DriveBackwardAutoStates::DRIVE_BACKWARDS:
         {
-            autoHMISignals.drivetrain_fwd_back = -0.25;
-            if ((ros::Time::now() - time_state_entered) > ros::Duration(0.5))
+            autoHMISignals.drivetrain_fwd_back = -0.10;
+            if ((ros::Time::now() - time_state_entered) > ros::Duration(1.0))
             {
                 mNextState = DriveBackwardAutoStates::END;
             }
@@ -38,7 +42,6 @@ hmi_agent_node::HMI_Signals DriveBackwardAuto::stepStateMachine(bool trajRunning
         case DriveBackwardAutoStates::END:
         {
             autoHMISignals.drivetrain_fwd_back = 0;
-            autoHMISignals.intake_rollers = false;
             break;
         }
     }
