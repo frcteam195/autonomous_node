@@ -26,7 +26,7 @@
 #define RATE (100)
 
 ros::NodeHandle* node = nullptr;
-std::atomic_int32_t selected_auto_mode = 0;
+std::atomic_int32_t selected_auto_mode {0};
 bool traj_follow_active = false;
 bool prev_traj_follow_active = false;
 bool traj_follow_complete = false;
@@ -70,14 +70,14 @@ int main(int argc, char **argv)
     hmi_agent_node::HMI_Signals auto_hmi_signals;
     while( ros::ok() )
     {
-        if(AutonomousHelper::getInstance().getRobotState() == RobotState::AUTONOMOUS && last_robot_state == RobotState::DISABLED)
+        if(AutonomousHelper::getInstance().getRobotState() == RobotState::AUTONOMOUS && last_robot_state == RobotState::DISABLED && !autoModePrg)
         {
             AutonomousHelper::getInstance().initialize_position();
             switch (selected_auto_mode)
             {
                 case 0:
                 {
-                    autoModePrg = new DriveBackwardAuto();
+                    autoModePrg = new SimpleAuto();
                     break;
                 }
                 case 1:
@@ -112,6 +112,7 @@ int main(int argc, char **argv)
         {
             auto_hmi_signals = autoModePrg->stepStateMachine(traj_follow_active, traj_follow_complete);
             auto_hmi_publisher.publish(auto_hmi_signals);
+            ROS_INFO("Stepping auto state machine");
         }
 
         ros::spinOnce();

@@ -4,7 +4,7 @@
 
 std::string PATH_1_POINT = "red_ball_3";
 
-// #define AUTO_ENABLED
+#define AUTO_ENABLED
 
 hmi_agent_node::HMI_Signals SimpleAuto::stepStateMachine(bool trajRunning, bool trajCompleted)
 {
