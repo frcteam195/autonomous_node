@@ -31,6 +31,7 @@ class AutonomousHelper : public Singleton<AutonomousHelper>
 {
     friend Singleton;
 public:
+    void drive_trajectory_points(std::vector<std::pair<std::string, double>>& points);
     void move_to_position(std::string position, double yaw_rotation_deg = 0);
     void initialize_position();
 

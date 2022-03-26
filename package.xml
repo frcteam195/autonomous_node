@@ -36,6 +36,10 @@
     <depend>action_processor_node</depend>
     <depend>local_planner_node</depend>
     <depend>ck_utilities_node</depend>
+    <depend>tf2</depend>
+    <depend>tf2_ros</depend>
+    <depend>tf2_eigen</depend>
+    <depend>tf2_geometry_msgs</depend>
   <!--   Note that this is equivalent to the following: -->
   <!--   <build_depend>roscpp</build_depend> -->
   <!--   <exec_depend>roscpp</exec_depend> -->

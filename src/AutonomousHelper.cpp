@@ -15,6 +15,13 @@
 
 #include <tf2/LinearMath/Quaternion.h>
 #include "ck_utilities/CKMath.hpp"
+#include "tf2_ros/transform_listener.h"
+#include "tf2_geometry_msgs/tf2_geometry_msgs.h"
+#include "geometry_msgs/PoseStamped.h"
+#include <geometry_msgs/TransformStamped.h>
+
+static tf2_ros::TransformListener *tfListener;
+static tf2_ros::Buffer tfBuffer;
 
 void AutonomousHelper::initialize_position()
 {
@@ -53,7 +60,7 @@ void AutonomousHelper::initialize_position()
     }
 }
 
-void AutonomousHelper::move_to_position(std::string position, double yaw_rotation_deg)
+void AutonomousHelper::drive_trajectory_points(std::vector<std::pair<std::string, double>>& points)
 {
     state = STATE::IDLE;
     timer = 0;
@@ -61,28 +68,53 @@ void AutonomousHelper::move_to_position(std::string position, double yaw_rotatio
     local_planner_node::PlanReq req;
     req.request.plan = std::vector<geometry_msgs::PoseStamped>();
     req.request.frame = local_planner_node::PlanReq::Request::FRAME_BASE;
+    
+    if (points.size() <= 0)
+    {
+        return;
+    }
 
-    geometry_msgs::PoseStamped point;
-    point.header.stamp = ros::Time::now();
-    point.header.frame_id = position;
-    point.pose.position.x = 0.0;
-    point.pose.position.y = 0.0;
-    point.pose.position.z = 0.0;
+    std::string firstPointLinkStr = points[0].first;
 
-    tf2::Quaternion Up;
-    Up.setRPY(0,0,ck::math::deg2rad(yaw_rotation_deg));
-    point.pose.orientation.w = Up.getW();
-    point.pose.orientation.x = Up.getX();
-    point.pose.orientation.y = Up.getY();
-    point.pose.orientation.z = Up.getZ();
+    for (const std::pair<std::string, double>& p : points)
+    {
+        // tf2::Stamped<tf2::Transform> point_to_first_point;
+        // tf2::convert(tfBuffer.lookupTransform(firstPointLinkStr, p.first, ros::Time(0)), point_to_first_point);
 
-    req.request.plan.push_back(point);
+        geometry_msgs::PoseStamped point;
+        point.header.stamp = ros::Time::now();
+        point.header.frame_id = p.first;
+        point.pose.position.x = 0;
+        point.pose.position.y = 0;
+        point.pose.position.z = 0;
+        // point.pose.position.x = point_to_first_point.getOrigin().getX();
+        // point.pose.position.y = point_to_first_point.getOrigin().getY();
+        // point.pose.position.z = point_to_first_point.getOrigin().getZ();
+        // ROS_INFO("Point %s x, y, z: %lf, %lf, %lf", p.first.c_str(), point.pose.position.x, point.pose.position.y, point.pose.position.z);
+
+
+        //TODO: Align transforms using quaternion from point_to_first_point
+        tf2::Quaternion Up;
+        Up.setRPY(0,0,ck::math::deg2rad(p.second));
+        point.pose.orientation.w = Up.getW();
+        point.pose.orientation.x = Up.getX();
+        point.pose.orientation.y = Up.getY();
+        point.pose.orientation.z = Up.getZ();
+
+        req.request.plan.push_back(point);
+    }
 
     ros::ServiceClient& lPlanReq = getLocalPlannerReqService();
     if (lPlanReq)
     {
         lPlanReq.call( req );
     }
+}
+
+void AutonomousHelper::move_to_position(std::string position, double yaw_rotation_deg)
+{
+    std::vector<std::pair<std::string, double>> v {{position, yaw_rotation_deg}};
+    drive_trajectory_points(v);
 }
 
 void AutonomousHelper::setRobotState(RobotState robot_state)
@@ -108,6 +140,7 @@ AllianceColor AutonomousHelper::getAllianceColor()
 AutonomousHelper::AutonomousHelper()
 {
     (void)getLocalPlannerReqService();
+    tfListener = new tf2_ros::TransformListener(tfBuffer);
 }
 AutonomousHelper::~AutonomousHelper() {}
 

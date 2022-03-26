@@ -12,6 +12,10 @@ find_package(catkin REQUIRED COMPONENTS
   rio_control_node
   action_processor_node
   ck_utilities_node
+  tf2
+  tf2_eigen
+  tf2_geometry_msgs
+  tf2_ros
 )
 
 catkin_package(
@@ -27,6 +31,10 @@ catkin_package(
   action_processor_node
   local_planner_node
   ck_utilities_node
+  tf2
+  tf2_eigen
+  tf2_geometry_msgs
+  tf2_ros
 )
 
 include_directories(

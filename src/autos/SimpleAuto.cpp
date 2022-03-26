@@ -2,7 +2,10 @@
 #include "AutonomousHelper.hpp"
 #include <string>
 
+// std::string PATH_1_POINT = "red_ball_3";
 std::string PATH_1_POINT = "red_ball_3";
+std::string PATH_2_POINT = "red_ball_2";
+std::string PATH_3_POINT = "red_ball_1";
 
 #define AUTO_ENABLED
 
@@ -32,7 +35,8 @@ hmi_agent_node::HMI_Signals SimpleAuto::stepStateMachine(bool trajRunning, bool 
     {
         case SimpleAutoStates::BEGIN:
         {
-            AutonomousHelper::getInstance().move_to_position(PATH_1_POINT, 90);
+            std::vector<std::pair<std::string, double>> v {{PATH_1_POINT, 90}, {PATH_2_POINT, 0}, {PATH_3_POINT, -90}};
+            AutonomousHelper::getInstance().drive_trajectory_points(v);
             mNextState = SimpleAutoStates::DRIVE_PATH_1;
             break;
         }
