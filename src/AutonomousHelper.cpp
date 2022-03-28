@@ -19,6 +19,7 @@
 #include "tf2_geometry_msgs/tf2_geometry_msgs.h"
 #include "geometry_msgs/PoseStamped.h"
 #include <geometry_msgs/TransformStamped.h>
+#include <quesadilla_auto_node/Planner_Input.h>
 
 static tf2_ros::TransformListener *tfListener;
 static tf2_ros::Buffer tfBuffer;
@@ -60,61 +61,22 @@ void AutonomousHelper::initialize_position()
     }
 }
 
-void AutonomousHelper::drive_trajectory_points(std::vector<std::pair<std::string, double>>& points)
+void AutonomousHelper::drive_trajectory(int trajectory_id)
 {
-    state = STATE::IDLE;
-    timer = 0;
-
-    local_planner_node::PlanReq req;
-    req.request.plan = std::vector<geometry_msgs::PoseStamped>();
-    req.request.frame = local_planner_node::PlanReq::Request::FRAME_BASE;
-    
-    if (points.size() <= 0)
-    {
-        return;
-    }
-
-    std::string firstPointLinkStr = points[0].first;
-
-    for (const std::pair<std::string, double>& p : points)
-    {
-        // tf2::Stamped<tf2::Transform> point_to_first_point;
-        // tf2::convert(tfBuffer.lookupTransform(firstPointLinkStr, p.first, ros::Time(0)), point_to_first_point);
-
-        geometry_msgs::PoseStamped point;
-        point.header.stamp = ros::Time::now();
-        point.header.frame_id = p.first;
-        point.pose.position.x = 0;
-        point.pose.position.y = 0;
-        point.pose.position.z = 0;
-        // point.pose.position.x = point_to_first_point.getOrigin().getX();
-        // point.pose.position.y = point_to_first_point.getOrigin().getY();
-        // point.pose.position.z = point_to_first_point.getOrigin().getZ();
-        // ROS_INFO("Point %s x, y, z: %lf, %lf, %lf", p.first.c_str(), point.pose.position.x, point.pose.position.y, point.pose.position.z);
-
-
-        //TODO: Align transforms using quaternion from point_to_first_point
-        tf2::Quaternion Up;
-        Up.setRPY(0,0,ck::math::deg2rad(p.second));
-        point.pose.orientation.w = Up.getW();
-        point.pose.orientation.x = Up.getX();
-        point.pose.orientation.y = Up.getY();
-        point.pose.orientation.z = Up.getZ();
-
-        req.request.plan.push_back(point);
-    }
-
-    ros::ServiceClient& lPlanReq = getLocalPlannerReqService();
-    if (lPlanReq)
-    {
-        lPlanReq.call( req );
-    }
+    quesadilla_auto_node::Planner_Input msg;
+    msg.begin_trajectory = true;
+    msg.force_stop = false;
+    msg.trajectory_id = trajectory_id;
+    planner_input_pub.publish(msg);
 }
 
-void AutonomousHelper::move_to_position(std::string position, double yaw_rotation_deg)
+void AutonomousHelper::stop_trajectory()
 {
-    std::vector<std::pair<std::string, double>> v {{position, yaw_rotation_deg}};
-    drive_trajectory_points(v);
+    quesadilla_auto_node::Planner_Input msg;
+    msg.begin_trajectory = false;
+    msg.force_stop = true;
+    msg.trajectory_id = -1;
+    planner_input_pub.publish(msg);
 }
 
 void AutonomousHelper::setRobotState(RobotState robot_state)
@@ -139,16 +101,7 @@ AllianceColor AutonomousHelper::getAllianceColor()
 
 AutonomousHelper::AutonomousHelper()
 {
-    (void)getLocalPlannerReqService();
     tfListener = new tf2_ros::TransformListener(tfBuffer);
+    planner_input_pub = node->advertise<quesadilla_auto_node::Planner_Input>("/QuesadillaPlannerInput", 1);
 }
 AutonomousHelper::~AutonomousHelper() {}
-
-ros::ServiceClient& AutonomousHelper::getLocalPlannerReqService()
-{
-    if (!local_planner_req_client)
-	{
-		local_planner_req_client = node->serviceClient<local_planner_node::PlanReq>("/local_plan_request", true);
-	}
-	return local_planner_req_client;
-}

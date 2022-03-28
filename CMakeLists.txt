@@ -16,6 +16,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf2_eigen
   tf2_geometry_msgs
   tf2_ros
+  quesadilla_auto_node
 )
 
 catkin_package(
@@ -35,6 +36,7 @@ catkin_package(
   tf2_eigen
   tf2_geometry_msgs
   tf2_ros
+  quesadilla_auto_node
 )
 
 include_directories(

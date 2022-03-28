@@ -31,8 +31,8 @@ class AutonomousHelper : public Singleton<AutonomousHelper>
 {
     friend Singleton;
 public:
-    void drive_trajectory_points(std::vector<std::pair<std::string, double>>& points);
-    void move_to_position(std::string position, double yaw_rotation_deg = 0);
+    void drive_trajectory(int trajectory_id);
+    void stop_trajectory();
     void initialize_position();
 
     void setRobotState(RobotState robot_state);
@@ -42,12 +42,11 @@ public:
 
 
 private:
-    ros::ServiceClient local_planner_req_client;
     std::atomic<RobotState> robot_state {RobotState::DISABLED};
     std::atomic<AllianceColor> alliance_color {AllianceColor::RED};
+    ros::Publisher planner_input_pub;
     //ActionHelper* action_helper = nullptr;
     std::atomic<STATE> state {STATE::IDLE};
-    ros::ServiceClient& getLocalPlannerReqService();
     int timer = 0;
 
     AutonomousHelper();

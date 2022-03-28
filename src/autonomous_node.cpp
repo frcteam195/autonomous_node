@@ -22,27 +22,20 @@
 
 #include "AutonomousHelper.hpp"
 #include <atomic>
+#include <quesadilla_auto_node/Planner_Output.h>
+
 
 #define RATE (100)
 
 ros::NodeHandle* node = nullptr;
 std::atomic_int32_t selected_auto_mode {0};
 bool traj_follow_active = false;
-bool prev_traj_follow_active = false;
 bool traj_follow_complete = false;
 
-void active_trajectory_callback (const local_planner_node::TrajectoryFollowCue &msg)
+void planner_callback (const quesadilla_auto_node::Planner_Output &msg)
 {
-    traj_follow_active = msg.traj_follow_active;
-    if (traj_follow_active)
-    {
-        traj_follow_complete = false;
-    }
-    else if (!traj_follow_active && prev_traj_follow_active)
-    {
-        traj_follow_complete = true;
-    }
-    prev_traj_follow_active = traj_follow_active;
+    traj_follow_active = msg.trajectory_active;
+    traj_follow_complete = msg.trajectory_completed;
 }
 
 void robot_status_callback (const rio_control_node::Robot_Status &msg)
@@ -61,7 +54,7 @@ int main(int argc, char **argv)
 	node = &n;
 
     static ros::Subscriber robot_status_subscriber = node->subscribe("/RobotStatus", 1, robot_status_callback);
-    static ros::Subscriber active_trajectory_subscriber = node->subscribe("/active_trajectory", 1, active_trajectory_callback);
+    static ros::Subscriber q_planner_subscriber = node->subscribe("/QuesadillaPlannerOutput", 1, planner_callback);
     static ros::Publisher auto_hmi_publisher = node->advertise<hmi_agent_node::HMI_Signals>("/HMISignals", 1);
     (void)AutonomousHelper::getInstance();
 
