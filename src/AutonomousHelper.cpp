@@ -63,20 +63,28 @@ void AutonomousHelper::initialize_position()
 
 void AutonomousHelper::drive_trajectory(int trajectory_id)
 {
+    static ros::ServiceClient quesadilla_service = node->serviceClient<quesadilla_auto_node::Planner_Input>("quesadilla_planner_input");
     quesadilla_auto_node::Planner_Input msg;
-    msg.begin_trajectory = true;
-    msg.force_stop = false;
-    msg.trajectory_id = trajectory_id;
-    planner_input_pub.publish(msg);
+    msg.request.begin_trajectory = true;
+    msg.request.force_stop = false;
+    msg.request.trajectory_id = trajectory_id;
+    if (!quesadilla_service.call(msg))
+    {
+        ROS_ERROR("Failed to start trajectory");
+    }
 }
 
 void AutonomousHelper::stop_trajectory()
 {
+    static ros::ServiceClient quesadilla_service = node->serviceClient<quesadilla_auto_node::Planner_Input>("quesadilla_planner_input");
     quesadilla_auto_node::Planner_Input msg;
-    msg.begin_trajectory = false;
-    msg.force_stop = true;
-    msg.trajectory_id = -1;
-    planner_input_pub.publish(msg);
+    msg.request.begin_trajectory = false;
+    msg.request.force_stop = true;
+    msg.request.trajectory_id = -1;
+    if (!quesadilla_service.call(msg))
+    {
+        ROS_ERROR("Failed to stop trajectory");
+    }
 }
 
 void AutonomousHelper::setRobotState(RobotState robot_state)
@@ -102,6 +110,5 @@ AllianceColor AutonomousHelper::getAllianceColor()
 AutonomousHelper::AutonomousHelper()
 {
     tfListener = new tf2_ros::TransformListener(tfBuffer);
-    planner_input_pub = node->advertise<quesadilla_auto_node::Planner_Input>("/QuesadillaPlannerInput", 1);
 }
 AutonomousHelper::~AutonomousHelper() {}

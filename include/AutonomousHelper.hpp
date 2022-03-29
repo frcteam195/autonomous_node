@@ -44,7 +44,6 @@ public:
 private:
     std::atomic<RobotState> robot_state {RobotState::DISABLED};
     std::atomic<AllianceColor> alliance_color {AllianceColor::RED};
-    ros::Publisher planner_input_pub;
     //ActionHelper* action_helper = nullptr;
     std::atomic<STATE> state {STATE::IDLE};
     int timer = 0;
