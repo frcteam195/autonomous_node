@@ -29,8 +29,8 @@
 
 ros::NodeHandle* node = nullptr;
 std::atomic_int32_t selected_auto_mode {0};
-bool traj_follow_active = false;
-bool traj_follow_complete = false;
+std::atomic_bool traj_follow_active {false};
+std::atomic_bool traj_follow_complete {false};
 
 void planner_callback (const quesadilla_auto_node::Planner_Output &msg)
 {
@@ -66,6 +66,9 @@ int main(int argc, char **argv)
         if(AutonomousHelper::getInstance().getRobotState() == RobotState::AUTONOMOUS && last_robot_state == RobotState::DISABLED && !autoModePrg)
         {
             AutonomousHelper::getInstance().initialize_position();
+            traj_follow_active = false;
+            traj_follow_complete = false;
+            std::this_thread::sleep_for(std::chrono::milliseconds(50));
             switch (selected_auto_mode)
             {
                 case 0:
@@ -105,7 +108,11 @@ int main(int argc, char **argv)
         {
             auto_hmi_signals = autoModePrg->stepStateMachine(traj_follow_active, traj_follow_complete);
             auto_hmi_publisher.publish(auto_hmi_signals);
-            ROS_INFO("Stepping auto state machine");
+        }
+        else if (traj_follow_active)
+        {
+            ROS_INFO("Force stopping trajectory!");
+            AutonomousHelper::getInstance().stop_trajectory();
         }
 
         ros::spinOnce();
