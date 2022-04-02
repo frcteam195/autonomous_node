@@ -7,7 +7,6 @@ class AutoMode1_5ball : public AutoBase
 public:
     enum class AutoMode1States : int
     {
-        BEGIN,      //Begin in auto_link_red_1
         DRIVE_PATH_1,   //Drive path id 0
         GET_BALL_3, //Intake ball 3
         SHOOT_1,    //Shoot preload and ball 3
@@ -23,6 +22,6 @@ public:
     hmi_agent_node::HMI_Signals stepStateMachine(bool trajRunning, bool trajCompleted) override;
 
 private:
-    AutoMode1States mAutoState {AutoMode1States::BEGIN};
-    AutoMode1States mNextState {AutoMode1States::BEGIN};
+    AutoMode1States mAutoState {AutoMode1States::DRIVE_PATH_1};
+    AutoMode1States mNextState {AutoMode1States::DRIVE_PATH_1};
 };

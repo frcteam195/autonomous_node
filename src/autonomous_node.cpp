@@ -15,8 +15,7 @@
 #include <robot_localization/SetPose.h>
 #include "rio_control_node/Robot_Status.h"
 #include "autos/AutoBase.hpp"
-#include "autos/SimpleAuto.hpp"
-#include "autos/DriveBackwardAuto.hpp"
+#include "autos/AutoMode1_5ball.hpp"
 
 #include <tf2/LinearMath/Quaternion.h>
 
@@ -73,7 +72,7 @@ int main(int argc, char **argv)
             {
                 case 0:
                 {
-                    autoModePrg = new SimpleAuto();
+                    autoModePrg = new AutoMode1_5ball();
                     break;
                 }
                 case 1:
