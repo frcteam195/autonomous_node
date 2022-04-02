@@ -53,8 +53,8 @@ int main(int argc, char **argv)
     ros::Rate rate(RATE);
 	node = &n;
 
-    static ros::Subscriber robot_status_subscriber = node->subscribe("/RobotStatus", 1, robot_status_callback);
-    static ros::Subscriber q_planner_subscriber = node->subscribe("/QuesadillaPlannerOutput", 1, planner_callback);
+    static ros::Subscriber robot_status_subscriber = node->subscribe("/RobotStatus", 1, robot_status_callback, ros::TransportHints().tcpNoDelay());
+    static ros::Subscriber q_planner_subscriber = node->subscribe("/QuesadillaPlannerOutput", 1, planner_callback, ros::TransportHints().tcpNoDelay());
     static ros::Publisher auto_hmi_publisher = node->advertise<hmi_agent_node::HMI_Signals>("/HMISignals", 1);
     (void)AutonomousHelper::getInstance();
 
@@ -66,8 +66,8 @@ int main(int argc, char **argv)
         if(AutonomousHelper::getInstance().getRobotState() == RobotState::AUTONOMOUS && last_robot_state == RobotState::DISABLED && !autoModePrg)
         {
             AutonomousHelper::getInstance().initialize_position();
-            // traj_follow_active = false;
-            // traj_follow_complete = false;
+            traj_follow_active = false;
+            traj_follow_complete = false;
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
             switch (selected_auto_mode)
             {
@@ -93,7 +93,6 @@ int main(int argc, char **argv)
                 }
             }
         }
-        last_robot_state = AutonomousHelper::getInstance().getRobotState();
 
         if(AutonomousHelper::getInstance().getRobotState() != RobotState::AUTONOMOUS)
         {
@@ -109,12 +108,14 @@ int main(int argc, char **argv)
             auto_hmi_signals = autoModePrg->stepStateMachine(traj_follow_active, traj_follow_complete);
             auto_hmi_publisher.publish(auto_hmi_signals);
         }
-        else if (traj_follow_active)
+        
+        if (AutonomousHelper::getInstance().getRobotState() != RobotState::AUTONOMOUS && last_robot_state == RobotState::AUTONOMOUS)
         {
             ROS_INFO("Force stopping trajectory!");
-            //AutonomousHelper::getInstance().stop_trajectory();
+            AutonomousHelper::getInstance().stop_trajectory();
         }
 
+        last_robot_state = AutonomousHelper::getInstance().getRobotState();
         ros::spinOnce();
         rate.sleep();
     }
