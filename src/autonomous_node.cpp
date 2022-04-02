@@ -66,8 +66,8 @@ int main(int argc, char **argv)
         if(AutonomousHelper::getInstance().getRobotState() == RobotState::AUTONOMOUS && last_robot_state == RobotState::DISABLED && !autoModePrg)
         {
             AutonomousHelper::getInstance().initialize_position();
-            traj_follow_active = false;
-            traj_follow_complete = false;
+            // traj_follow_active = false;
+            // traj_follow_complete = false;
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
             switch (selected_auto_mode)
             {
@@ -112,7 +112,7 @@ int main(int argc, char **argv)
         else if (traj_follow_active)
         {
             ROS_INFO("Force stopping trajectory!");
-            AutonomousHelper::getInstance().stop_trajectory();
+            //AutonomousHelper::getInstance().stop_trajectory();
         }
 
         ros::spinOnce();
