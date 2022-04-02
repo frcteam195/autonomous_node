@@ -13,25 +13,38 @@ hmi_agent_node::HMI_Signals AutoMode1_5ball::stepStateMachine(bool trajRunning, 
 	static ros::Time time_state_entered = ros::Time::now();
 	if(mNextState != mAutoState)
 	{
+        ROS_INFO("Running state: %d", (int)mAutoState);
 		time_state_entered = ros::Time::now();
 	}
 
     mAutoState = mNextState;
 
-    ROS_INFO("Running state: %d", (int)mAutoState);
     switch (mAutoState)
     {
-        case AutoMode1States::DRIVE_PATH_1:
+        case AutoMode1States::BEGIN_PATH_1:
         {
             AutonomousHelper::getInstance().drive_trajectory(0);
             ROS_INFO("Started trajectory id: %d", 0);
             mNextState = AutoMode1States::DRIVE_PATH_1;
             break;
         }
+        case AutoMode1States::DRIVE_PATH_1:
+        {
+            if((ros::Time::now() - time_state_entered) > ros::Duration(0.15))
+            {
+                autoHMISignals.intake_rollers = true;
+            }
+            
+            if (!trajRunning && trajCompleted)
+            {
+                mNextState = AutoMode1States::GET_BALL_3;
+            }
+            break;
+        }
         case AutoMode1States::GET_BALL_3:
         {
             autoHMISignals.intake_rollers = true;
-            if (!trajRunning && trajCompleted)
+            if ((ros::Time::now() - time_state_entered) > ros::Duration(1))
             {
                 mNextState = AutoMode1States::SHOOT_1;
             }
@@ -42,14 +55,20 @@ hmi_agent_node::HMI_Signals AutoMode1_5ball::stepStateMachine(bool trajRunning, 
             autoHMISignals.allow_shoot = true;
             if ((ros::Time::now() - time_state_entered) > ros::Duration(1))
             {
-                mNextState = AutoMode1States::DRIVE_PATH_2;
+                mNextState = AutoMode1States::BEGIN_PATH_2;
             }
+            break;
+        }
+        case AutoMode1States::BEGIN_PATH_2:
+        {
+            AutonomousHelper::getInstance().drive_trajectory(1);
+            ROS_INFO("Started trajectory id: %d", 1);
+            mNextState = AutoMode1States::DRIVE_PATH_2;
             break;
         }
         case AutoMode1States::DRIVE_PATH_2:
         {
-            AutonomousHelper::getInstance().drive_trajectory(1);
-            ROS_INFO("Started trajectory id: %d", 1);
+            autoHMISignals.intake_rollers = true;
             mNextState = AutoMode1States::GET_BALL_2;
             break;
         }
