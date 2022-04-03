@@ -116,7 +116,7 @@ hmi_agent_node::HMI_Signals AutoMode1_5ball::stepStateMachine(bool trajRunning, 
         {
             autoHMISignals.intake_rollers = true;
             autoHMISignals.allow_shoot = true;
-            if ((ros::Time::now() - time_state_entered) > ros::Duration(2))
+            if ((ros::Time::now() - time_state_entered) > ros::Duration(6))
             {
                 mNextState = AutoMode1States::END;
             }
