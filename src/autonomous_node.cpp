@@ -16,6 +16,8 @@
 #include "rio_control_node/Robot_Status.h"
 #include "autos/AutoBase.hpp"
 #include "autos/AutoMode1_5ball.hpp"
+#include "autos/AutoMode2_2ball.hpp"
+#include "autos/AutoMode3_1ball.hpp"
 
 #include <tf2/LinearMath/Quaternion.h>
 
@@ -77,12 +79,12 @@ int main(int argc, char **argv)
                 }
                 case 1:
                 {
-                    autoModePrg = nullptr;
+                    autoModePrg = new AutoMode2_2ball();
                     break;
                 }
                 case 2:
                 {
-                    autoModePrg = nullptr;
+                    autoModePrg = new AutoMode3_1ball();
                     break;
                 }
                 default:
