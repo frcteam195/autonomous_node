@@ -18,6 +18,7 @@
 #include "autos/AutoMode1_5ball.hpp"
 #include "autos/AutoMode2_2ball.hpp"
 #include "autos/AutoMode3_1ball.hpp"
+#include "autos/AutoMode4_1ball.hpp"
 
 #include <tf2/LinearMath/Quaternion.h>
 
@@ -85,6 +86,11 @@ int main(int argc, char **argv)
                 case 2:
                 {
                     autoModePrg = new AutoMode3_1ball();
+                    break;
+                }
+                case 3:
+                {
+                    autoModePrg = new AutoMode4_1ball();
                     break;
                 }
                 default:
