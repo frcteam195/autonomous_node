@@ -39,7 +39,7 @@ hmi_agent_node::HMI_Signals AutoMode4_1ball::stepStateMachine(bool trajRunning, 
         case AutoMode4States::SHOOT_1:
         {
             autoHMISignals.retract_intake = true;
-            if (intake_counter++ < 5)
+            if (intake_counter++ < 20)
             {
                 autoHMISignals.intake_rollers = true;
             }
