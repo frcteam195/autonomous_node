@@ -8,6 +8,8 @@ hmi_agent_node::HMI_Signals AutoMode1_5ball_Alt::stepStateMachine(bool trajRunni
     (void) trajCompleted;
     
     hmi_agent_node::HMI_Signals autoHMISignals;
+    memset(&autoHMISignals, 0, sizeof(hmi_agent_node::HMI_Signals));
+
     autoHMISignals.retract_intake = true;
 
 	static ros::Time time_state_entered = ros::Time::now();
@@ -44,7 +46,7 @@ hmi_agent_node::HMI_Signals AutoMode1_5ball_Alt::stepStateMachine(bool trajRunni
         case AutoMode1AltStates::GET_BALL_3:
         {
             autoHMISignals.intake_rollers = true;
-            if ((ros::Time::now() - time_state_entered) > ros::Duration(1))
+            if ((ros::Time::now() - time_state_entered) > ros::Duration(0.25))
             {
                 mNextState = AutoMode1AltStates::SHOOT_1;
             }
@@ -54,7 +56,7 @@ hmi_agent_node::HMI_Signals AutoMode1_5ball_Alt::stepStateMachine(bool trajRunni
         {
             autoHMISignals.intake_rollers = true;
             autoHMISignals.allow_shoot = true;
-            if ((ros::Time::now() - time_state_entered) > ros::Duration(2))
+            if ((ros::Time::now() - time_state_entered) > ros::Duration(2.25))
             {
                 mNextState = AutoMode1AltStates::BEGIN_PATH_2;
             }
@@ -90,7 +92,7 @@ hmi_agent_node::HMI_Signals AutoMode1_5ball_Alt::stepStateMachine(bool trajRunni
         {
             autoHMISignals.intake_rollers = true;
             autoHMISignals.allow_shoot = false;
-            if ((ros::Time::now() - time_state_entered) > ros::Duration(2.5))
+            if ((ros::Time::now() - time_state_entered) > ros::Duration(0.5))
             {
                 mNextState = AutoMode1AltStates::SHOOT_2;
             }
@@ -100,7 +102,7 @@ hmi_agent_node::HMI_Signals AutoMode1_5ball_Alt::stepStateMachine(bool trajRunni
         {
             autoHMISignals.intake_rollers = true;
             autoHMISignals.allow_shoot = true;
-            if ((ros::Time::now() - time_state_entered) > ros::Duration(2.5))
+            if ((ros::Time::now() - time_state_entered) > ros::Duration(4))
             {
                 mNextState = AutoMode1AltStates::BEGIN_PATH_3;
             }
@@ -131,7 +133,7 @@ hmi_agent_node::HMI_Signals AutoMode1_5ball_Alt::stepStateMachine(bool trajRunni
             autoHMISignals.intake_rollers = true;
             autoHMISignals.allow_shoot = false;
 
-            if ((ros::Time::now() - time_state_entered) > ros::Duration(2))
+            if ((ros::Time::now() - time_state_entered) > ros::Duration(0.5))
             {
                 mNextState = AutoMode1AltStates::SHOOT_3;
             }
@@ -141,7 +143,7 @@ hmi_agent_node::HMI_Signals AutoMode1_5ball_Alt::stepStateMachine(bool trajRunni
         {
             autoHMISignals.intake_rollers = true;
             autoHMISignals.allow_shoot = true;
-            if ((ros::Time::now() - time_state_entered) > ros::Duration(6))
+            if ((ros::Time::now() - time_state_entered) > ros::Duration(8))
             {
                 mNextState = AutoMode1AltStates::END;
             }
