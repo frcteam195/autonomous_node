@@ -1,12 +1,9 @@
-#include "autos/AutoMode1_5ball_Alt.hpp"
+#include "autos/AutoMode5_5ball.hpp"
 #include "AutonomousHelper.hpp"
 #include <string>
 
-hmi_agent_node::HMI_Signals AutoMode1_5ball_Alt::stepStateMachine(bool trajRunning, bool trajCompleted)
-{
-    (void) trajRunning;
-    (void) trajCompleted;
-    
+hmi_agent_node::HMI_Signals AutoMode5_5ball::stepStateMachine(bool trajRunning, bool trajCompleted)
+{    
     hmi_agent_node::HMI_Signals autoHMISignals;
     memset(&autoHMISignals, 0, sizeof(hmi_agent_node::HMI_Signals));
 
@@ -23,14 +20,14 @@ hmi_agent_node::HMI_Signals AutoMode1_5ball_Alt::stepStateMachine(bool trajRunni
 
     switch (mAutoState)
     {
-        case AutoMode1AltStates::BEGIN_PATH_1:
+        case AutoMode5States::BEGIN_PATH_1:
         {
-            AutonomousHelper::getInstance().drive_trajectory(0);
-            ROS_INFO("Started trajectory id: %d", 0);
-            mNextState = AutoMode1AltStates::DRIVE_PATH_1;
+            AutonomousHelper::getInstance().drive_trajectory(7);
+            ROS_INFO("Started trajectory id: %d", 7);
+            mNextState = AutoMode5States::DRIVE_PATH_1;
             break;
         }
-        case AutoMode1AltStates::DRIVE_PATH_1:
+        case AutoMode5States::DRIVE_PATH_1:
         {
             if((ros::Time::now() - time_state_entered) > ros::Duration(0.35))
             {
@@ -39,121 +36,141 @@ hmi_agent_node::HMI_Signals AutoMode1_5ball_Alt::stepStateMachine(bool trajRunni
             
             if (!trajRunning && trajCompleted)
             {
-                mNextState = AutoMode1AltStates::GET_BALL_3;
+                mNextState = AutoMode5States::GET_BALL_3;
             }
             break;
         }
-        case AutoMode1AltStates::GET_BALL_3:
+        case AutoMode5States::GET_BALL_3:
         {
             autoHMISignals.intake_rollers = true;
             if ((ros::Time::now() - time_state_entered) > ros::Duration(0.25))
             {
-                mNextState = AutoMode1AltStates::SHOOT_1;
+                mNextState = AutoMode5States::SHOOT_1;
             }
             break;
         }
-        case AutoMode1AltStates::SHOOT_1:
+        case AutoMode5States::SHOOT_1:
         {
             autoHMISignals.intake_rollers = true;
             autoHMISignals.allow_shoot = true;
-            if ((ros::Time::now() - time_state_entered) > ros::Duration(2.25))
+            if ((ros::Time::now() - time_state_entered) > ros::Duration(1.75))
             {
-                mNextState = AutoMode1AltStates::BEGIN_PATH_2;
+                mNextState = AutoMode5States::BEGIN_PATH_2;
             }
             break;
         }
-        case AutoMode1AltStates::BEGIN_PATH_2:
+        case AutoMode5States::BEGIN_PATH_2:
         {
             autoHMISignals.intake_rollers = true;
             autoHMISignals.allow_shoot = false;
-            AutonomousHelper::getInstance().drive_trajectory(1);
-            ROS_INFO("Started trajectory id: %d", 1);
-            mNextState = AutoMode1AltStates::DRIVE_PATH_2;
+            AutonomousHelper::getInstance().drive_trajectory(8);
+            ROS_INFO("Started trajectory id: %d", 8);
+            mNextState = AutoMode5States::DRIVE_PATH_2;
             break;
         }
-        case AutoMode1AltStates::DRIVE_PATH_2:
+        case AutoMode5States::DRIVE_PATH_2:
         {
             autoHMISignals.intake_rollers = true;
             autoHMISignals.allow_shoot = false;
-            mNextState = AutoMode1AltStates::GET_BALL_2;
+            mNextState = AutoMode5States::GET_BALL_2;
             break;
         }
-        case AutoMode1AltStates::GET_BALL_2:
+        case AutoMode5States::GET_BALL_2:
         {
             autoHMISignals.intake_rollers = true;
             autoHMISignals.allow_shoot = false;
             if (!trajRunning && trajCompleted)
             {
-                mNextState = AutoMode1AltStates::GET_BALL_7;
+                mNextState = AutoMode5States::SHOOT_2;
             }
             break;
         }
-        case AutoMode1AltStates::GET_BALL_7:
-        {
-            autoHMISignals.intake_rollers = true;
-            autoHMISignals.allow_shoot = false;
-            if ((ros::Time::now() - time_state_entered) > ros::Duration(0.5))
-            {
-                mNextState = AutoMode1AltStates::SHOOT_2;
-            }
-            break;
-        }
-        case AutoMode1AltStates::SHOOT_2:
+        case AutoMode5States::SHOOT_2:
         {
             autoHMISignals.intake_rollers = true;
             autoHMISignals.allow_shoot = true;
-            if ((ros::Time::now() - time_state_entered) > ros::Duration(4))
+            if ((ros::Time::now() - time_state_entered) > ros::Duration(1.5))
             {
-                mNextState = AutoMode1AltStates::BEGIN_PATH_3;
+                mNextState = AutoMode5States::BEGIN_PATH_3;
             }
             break;
         }
-        case AutoMode1AltStates::BEGIN_PATH_3:
+        case AutoMode5States::BEGIN_PATH_3:
         {
             autoHMISignals.allow_shoot = false;
 
-            AutonomousHelper::getInstance().drive_trajectory(11);
-            ROS_INFO("Started trajectory id: %d", 11);
-            mNextState = AutoMode1AltStates::DRIVE_PATH_3;
+            AutonomousHelper::getInstance().drive_trajectory(9);
+            ROS_INFO("Started trajectory id: %d", 9);
+            mNextState = AutoMode5States::DRIVE_PATH_3;
             break;
         }
-        case AutoMode1AltStates::DRIVE_PATH_3:
+        case AutoMode5States::DRIVE_PATH_3:
         {
             autoHMISignals.intake_rollers = true;
             autoHMISignals.allow_shoot = false;
 
             if (!trajRunning && trajCompleted)
             {
-                mNextState = AutoMode1AltStates::GET_BALL_FEED;
+                mNextState = AutoMode5States::GET_BALL_7;
             }
             break;
         }
-        case AutoMode1AltStates::GET_BALL_FEED:
+        case AutoMode5States::GET_BALL_7:
+        {
+            autoHMISignals.intake_rollers = true;
+            autoHMISignals.allow_shoot = false;
+            if ((ros::Time::now() - time_state_entered) > ros::Duration(1))
+            {
+                mNextState = AutoMode5States::BEGIN_PATH_4;
+            }
+            break;
+        }
+        case AutoMode5States::BEGIN_PATH_4:
+        {
+            autoHMISignals.allow_shoot = false;
+
+            AutonomousHelper::getInstance().drive_trajectory(10);
+            ROS_INFO("Started trajectory id: %d", 10);
+            mNextState = AutoMode5States::DRIVE_PATH_4;
+            break;
+        }
+        case AutoMode5States::DRIVE_PATH_4:
+        {
+            autoHMISignals.intake_rollers = true;
+            autoHMISignals.allow_shoot = false;
+
+            if (!trajRunning && trajCompleted)
+            {
+                mNextState = AutoMode5States::GET_BALL_FEED;
+            }
+            break;
+        }
+        case AutoMode5States::GET_BALL_FEED:
         {
             autoHMISignals.intake_rollers = true;
             autoHMISignals.allow_shoot = false;
 
             if ((ros::Time::now() - time_state_entered) > ros::Duration(0.5))
             {
-                mNextState = AutoMode1AltStates::SHOOT_3;
+                mNextState = AutoMode5States::SHOOT_3;
             }
             break;
         }
-        case AutoMode1AltStates::SHOOT_3:
+        case AutoMode5States::SHOOT_3:
         {
             autoHMISignals.intake_rollers = true;
             autoHMISignals.allow_shoot = true;
             if ((ros::Time::now() - time_state_entered) > ros::Duration(8))
             {
-                mNextState = AutoMode1AltStates::END;
+                mNextState = AutoMode5States::END;
             }
             break;
         }
-        case AutoMode1AltStates::END:
+        case AutoMode5States::END:
         {
             autoHMISignals.intake_rollers = true;
             autoHMISignals.allow_shoot = true;
-            mNextState = AutoMode1AltStates::END;  //Wait
+            mNextState = AutoMode5States::END;  //Wait
             break;
         }
     }
