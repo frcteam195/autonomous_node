@@ -77,7 +77,7 @@ int main(int argc, char **argv)
             {
                 case 0:
                 {
-                    autoModePrg = new AutoMode5_5ball();
+                    autoModePrg = new AutoMode1_5ball_Alt();
                     break;
                 }
                 case 1:
