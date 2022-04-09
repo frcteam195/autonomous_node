@@ -16,6 +16,7 @@
 #include "rio_control_node/Robot_Status.h"
 #include "autos/AutoBase.hpp"
 #include "autos/AutoMode1_5ball.hpp"
+#include "autos/AutoMode1_5ball_Alt.hpp"
 #include "autos/AutoMode2_2ball.hpp"
 #include "autos/AutoMode3_1ball.hpp"
 #include "autos/AutoMode4_1ball.hpp"
@@ -75,7 +76,7 @@ int main(int argc, char **argv)
             {
                 case 0:
                 {
-                    autoModePrg = new AutoMode1_5ball();
+                    autoModePrg = new AutoMode1_5ball_Alt();
                     break;
                 }
                 case 1:
