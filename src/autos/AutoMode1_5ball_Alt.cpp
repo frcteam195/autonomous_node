@@ -102,7 +102,7 @@ hmi_agent_node::HMI_Signals AutoMode1_5ball_Alt::stepStateMachine(bool trajRunni
         {
             autoHMISignals.intake_rollers = true;
             autoHMISignals.allow_shoot = true;
-            if ((ros::Time::now() - time_state_entered) > ros::Duration(4))
+            if ((ros::Time::now() - time_state_entered) > ros::Duration(2))
             {
                 mNextState = AutoMode1AltStates::BEGIN_PATH_3;
             }
