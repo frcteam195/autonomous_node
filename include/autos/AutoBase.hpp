@@ -4,6 +4,6 @@
 class AutoBase
 {
 public:
-    virtual hmi_agent_node::HMI_Signals stepStateMachine(bool trajRunning, bool trajCompleted) = 0;
+    virtual hmi_agent_node::HMI_Signals stepStateMachine(bool trajRunning, bool trajCompleted, int traj_id) = 0;
     virtual ~AutoBase() = default;
 };

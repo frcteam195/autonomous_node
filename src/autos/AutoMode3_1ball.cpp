@@ -2,10 +2,11 @@
 #include "AutonomousHelper.hpp"
 #include <string>
 
-hmi_agent_node::HMI_Signals AutoMode3_1ball::stepStateMachine(bool trajRunning, bool trajCompleted)
+hmi_agent_node::HMI_Signals AutoMode3_1ball::stepStateMachine(bool trajRunning, bool trajCompleted, int traj_id)
 {
     (void) trajRunning;
     (void) trajCompleted;
+    (void) traj_id;
     
     hmi_agent_node::HMI_Signals autoHMISignals;
 

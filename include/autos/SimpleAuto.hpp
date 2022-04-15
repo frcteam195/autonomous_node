@@ -14,7 +14,7 @@ public:
         END
     };
 
-    hmi_agent_node::HMI_Signals stepStateMachine(bool trajRunning, bool trajCompleted) override;
+    hmi_agent_node::HMI_Signals stepStateMachine(bool trajRunning, bool trajCompleted, int traj_id) override;
 
 private:
     SimpleAutoStates mAutoState {SimpleAutoStates::BEGIN};

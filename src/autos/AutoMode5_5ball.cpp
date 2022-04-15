@@ -2,10 +2,10 @@
 #include "AutonomousHelper.hpp"
 #include <string>
 
-hmi_agent_node::HMI_Signals AutoMode5_5ball::stepStateMachine(bool trajRunning, bool trajCompleted)
+hmi_agent_node::HMI_Signals AutoMode5_5ball::stepStateMachine(bool trajRunning, bool trajCompleted, int traj_id)
 {    
     hmi_agent_node::HMI_Signals autoHMISignals;
-    memset(&autoHMISignals, 0, sizeof(hmi_agent_node::HMI_Signals));
+    // memset(&autoHMISignals, 0, sizeof(hmi_agent_node::HMI_Signals));
 
     autoHMISignals.retract_intake = true;
 
@@ -22,8 +22,9 @@ hmi_agent_node::HMI_Signals AutoMode5_5ball::stepStateMachine(bool trajRunning, 
     {
         case AutoMode5States::BEGIN_PATH_1:
         {
-            AutonomousHelper::getInstance().drive_trajectory(7);
-            ROS_INFO("Started trajectory id: %d", 7);
+            // AutonomousHelper::getInstance().drive_trajectory(7);
+            AutonomousHelper::getInstance().drive_trajectory(12);
+            ROS_INFO("Started trajectory id: %d", 12);
             mNextState = AutoMode5States::DRIVE_PATH_1;
             break;
         }
@@ -34,7 +35,7 @@ hmi_agent_node::HMI_Signals AutoMode5_5ball::stepStateMachine(bool trajRunning, 
                 autoHMISignals.intake_rollers = true;
             }
             
-            if (!trajRunning && trajCompleted)
+            if (!trajRunning && trajCompleted && traj_id == 12)
             {
                 mNextState = AutoMode5States::GET_BALL_3;
             }
@@ -63,7 +64,8 @@ hmi_agent_node::HMI_Signals AutoMode5_5ball::stepStateMachine(bool trajRunning, 
         {
             autoHMISignals.intake_rollers = true;
             autoHMISignals.allow_shoot = false;
-            AutonomousHelper::getInstance().drive_trajectory(8);
+            // AutonomousHelper::getInstance().drive_trajectory(8);
+            AutonomousHelper::getInstance().drive_trajectory(13);
             ROS_INFO("Started trajectory id: %d", 8);
             mNextState = AutoMode5States::DRIVE_PATH_2;
             break;
@@ -79,7 +81,7 @@ hmi_agent_node::HMI_Signals AutoMode5_5ball::stepStateMachine(bool trajRunning, 
         {
             autoHMISignals.intake_rollers = true;
             autoHMISignals.allow_shoot = false;
-            if (!trajRunning && trajCompleted)
+            if (!trajRunning && trajCompleted && traj_id == 13)
             {
                 mNextState = AutoMode5States::SHOOT_2;
             }
@@ -97,9 +99,11 @@ hmi_agent_node::HMI_Signals AutoMode5_5ball::stepStateMachine(bool trajRunning, 
         }
         case AutoMode5States::BEGIN_PATH_3:
         {
+            autoHMISignals.intake_rollers = true;
             autoHMISignals.allow_shoot = false;
 
-            AutonomousHelper::getInstance().drive_trajectory(9);
+            // AutonomousHelper::getInstance().drive_trajectory(9);
+            AutonomousHelper::getInstance().drive_trajectory(14);
             ROS_INFO("Started trajectory id: %d", 9);
             mNextState = AutoMode5States::DRIVE_PATH_3;
             break;
@@ -109,7 +113,7 @@ hmi_agent_node::HMI_Signals AutoMode5_5ball::stepStateMachine(bool trajRunning, 
             autoHMISignals.intake_rollers = true;
             autoHMISignals.allow_shoot = false;
 
-            if (!trajRunning && trajCompleted)
+            if (!trajRunning && trajCompleted && traj_id == 14)
             {
                 mNextState = AutoMode5States::GET_BALL_7;
             }
@@ -119,7 +123,7 @@ hmi_agent_node::HMI_Signals AutoMode5_5ball::stepStateMachine(bool trajRunning, 
         {
             autoHMISignals.intake_rollers = true;
             autoHMISignals.allow_shoot = false;
-            if ((ros::Time::now() - time_state_entered) > ros::Duration(1))
+            if ((ros::Time::now() - time_state_entered) > ros::Duration(0.25))
             {
                 mNextState = AutoMode5States::BEGIN_PATH_4;
             }
@@ -127,9 +131,11 @@ hmi_agent_node::HMI_Signals AutoMode5_5ball::stepStateMachine(bool trajRunning, 
         }
         case AutoMode5States::BEGIN_PATH_4:
         {
+            autoHMISignals.intake_rollers = true;
             autoHMISignals.allow_shoot = false;
 
-            AutonomousHelper::getInstance().drive_trajectory(10);
+            // AutonomousHelper::getInstance().drive_trajectory(10);
+            AutonomousHelper::getInstance().drive_trajectory(15);
             ROS_INFO("Started trajectory id: %d", 10);
             mNextState = AutoMode5States::DRIVE_PATH_4;
             break;
@@ -139,7 +145,7 @@ hmi_agent_node::HMI_Signals AutoMode5_5ball::stepStateMachine(bool trajRunning, 
             autoHMISignals.intake_rollers = true;
             autoHMISignals.allow_shoot = false;
 
-            if (!trajRunning && trajCompleted)
+            if (!trajRunning && trajCompleted && traj_id == 15)
             {
                 mNextState = AutoMode5States::GET_BALL_FEED;
             }

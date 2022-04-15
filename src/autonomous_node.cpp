@@ -21,6 +21,7 @@
 #include "autos/AutoMode2_2ball.hpp"
 #include "autos/AutoMode3_1ball.hpp"
 #include "autos/AutoMode4_1ball.hpp"
+#include "autos/AutoFollowPath.hpp"
 
 #include <tf2/LinearMath/Quaternion.h>
 
@@ -35,11 +36,13 @@ ros::NodeHandle* node = nullptr;
 std::atomic_int32_t selected_auto_mode {0};
 std::atomic_bool traj_follow_active {false};
 std::atomic_bool traj_follow_complete {false};
+std::atomic_int32_t traj_id {-1};
 
 void planner_callback (const quesadilla_auto_node::Planner_Output &msg)
 {
     traj_follow_active = msg.trajectory_active;
     traj_follow_complete = msg.trajectory_completed;
+    traj_id = msg.trajectory_id;
 }
 
 void robot_status_callback (const rio_control_node::Robot_Status &msg)
@@ -72,12 +75,15 @@ int main(int argc, char **argv)
             AutonomousHelper::getInstance().initialize_position();
             traj_follow_active = false;
             traj_follow_complete = false;
+            traj_id = -1;
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
             switch (selected_auto_mode)
             {
                 case 0:
                 {
-                    autoModePrg = new AutoMode1_5ball_Alt();
+                    // autoModePrg = new AutoMode1_5ball_Alt();
+                    autoModePrg = new AutoMode5_5ball();
+                    // autoModePrg = new AutoFollowPath();
                     break;
                 }
                 case 1:
@@ -93,6 +99,7 @@ int main(int argc, char **argv)
                 case 3:
                 {
                     autoModePrg = new AutoMode4_1ball();
+                    // autoModePrg = new AutoMode5_5ball();
                     break;
                 }
                 default:
@@ -114,13 +121,13 @@ int main(int argc, char **argv)
 
         if (autoModePrg != nullptr)
         {
-            auto_hmi_signals = autoModePrg->stepStateMachine(traj_follow_active, traj_follow_complete);
+            auto_hmi_signals = autoModePrg->stepStateMachine(traj_follow_active, traj_follow_complete, traj_id);
             auto_hmi_publisher.publish(auto_hmi_signals);
         }
         
         if (AutonomousHelper::getInstance().getRobotState() != RobotState::AUTONOMOUS && last_robot_state == RobotState::AUTONOMOUS)
         {
-            ROS_INFO("Force stopping trajectory!");
+            ROS_ERROR("Force stopping trajectory!");
             AutonomousHelper::getInstance().stop_trajectory();
         }
 
