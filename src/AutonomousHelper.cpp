@@ -31,10 +31,38 @@ void AutonomousHelper::initialize_position(int auto_id)
     
     robot_localization::SetPose initial_pose;
     initial_pose.request.pose.header.stamp = ros::Time::now();
-    std::string alliance_color_str = alliance_color == AllianceColor::RED ? "red" : "blue";
-    std::stringstream ss_auto;
-    ss_auto << "auto_" << auto_id << "_" << alliance_color_str << "_link" << std::ends;
-    initial_pose.request.pose.header.frame_id = ss_auto.str();
+    // std::string alliance_color_str = alliance_color == AllianceColor::RED ? "red" : "blue";
+    // std::stringstream ss_auto;
+    // ss_auto << "auto_" << auto_id << "_" << alliance_color_str << "_link" << std::ends;
+    // initial_pose.request.pose.header.frame_id = ss_auto.str();
+
+    switch (auto_id)
+    {
+        case 1:
+        {
+            initial_pose.request.pose.header.frame_id = alliance_color == AllianceColor::RED ? "auto_1_red_link" : "auto_1_blue_link";
+            break;
+        }
+        case 2:
+        {
+            initial_pose.request.pose.header.frame_id = alliance_color == AllianceColor::RED ? "auto_2_red_link" : "auto_2_blue_link";
+            break;
+        }
+        case 3:
+        {
+            initial_pose.request.pose.header.frame_id = alliance_color == AllianceColor::RED ? "auto_3_red_link" : "auto_3_blue_link";
+            break;
+        }
+        case 4:
+        {
+            initial_pose.request.pose.header.frame_id = alliance_color == AllianceColor::RED ? "auto_3_red_link" : "auto_3_blue_link";
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
     
     initial_pose.request.pose.pose.pose.position.x = 0;
     initial_pose.request.pose.pose.pose.position.y = 0;
