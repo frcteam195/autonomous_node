@@ -4,6 +4,7 @@
 #include <thread>
 #include <string>
 #include <mutex>
+#include <sstream>
 
 #include <action_helper/action_helper.hpp>
 
@@ -24,13 +25,16 @@
 static tf2_ros::TransformListener *tfListener;
 static tf2_ros::Buffer tfBuffer;
 
-void AutonomousHelper::initialize_position()
+void AutonomousHelper::initialize_position(int auto_id)
 {
     static ros::ServiceClient position_reset_service = node->serviceClient<robot_localization::SetPose>("/set_pose");
     
     robot_localization::SetPose initial_pose;
     initial_pose.request.pose.header.stamp = ros::Time::now();
-    initial_pose.request.pose.header.frame_id = alliance_color == AllianceColor::RED ? "auto_1_red_link" : "auto_1_blue_link";
+    std::string alliance_color_str = alliance_color == AllianceColor::RED ? "red" : "blue";
+    std::stringstream ss_auto;
+    ss_auto << "auto_" << auto_id << "_" << alliance_color_str << "_link" << std::ends;
+    initial_pose.request.pose.header.frame_id = ss_auto.str();
     
     initial_pose.request.pose.pose.pose.position.x = 0;
     initial_pose.request.pose.pose.pose.position.y = 0;

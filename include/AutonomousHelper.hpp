@@ -33,7 +33,7 @@ class AutonomousHelper : public Singleton<AutonomousHelper>
 public:
     void drive_trajectory(int trajectory_id);
     void stop_trajectory();
-    void initialize_position();
+    void initialize_position(int auto_id);
 
     void setRobotState(RobotState robot_state);
     void setAllianceColor(AllianceColor alliance_color);

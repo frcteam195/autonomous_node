@@ -72,15 +72,15 @@ int main(int argc, char **argv)
     {
         if(AutonomousHelper::getInstance().getRobotState() == RobotState::AUTONOMOUS && last_robot_state == RobotState::DISABLED && !autoModePrg)
         {
-            AutonomousHelper::getInstance().initialize_position();
             traj_follow_active = false;
             traj_follow_complete = false;
             traj_id = -1;
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
             switch (selected_auto_mode)
             {
                 case 0:
                 {
+                    AutonomousHelper::getInstance().initialize_position(1);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(50));
                     // autoModePrg = new AutoMode1_5ball_Alt();
                     autoModePrg = new AutoMode5_5ball();
                     // autoModePrg = new AutoFollowPath();
@@ -88,16 +88,22 @@ int main(int argc, char **argv)
                 }
                 case 1:
                 {
+                    AutonomousHelper::getInstance().initialize_position(2);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(50));
                     autoModePrg = new AutoMode2_2ball();
                     break;
                 }
                 case 2:
                 {
+                    AutonomousHelper::getInstance().initialize_position(3);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(50));
                     autoModePrg = new AutoMode3_1ball();
                     break;
                 }
                 case 3:
                 {
+                    AutonomousHelper::getInstance().initialize_position(3);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(50));
                     autoModePrg = new AutoMode4_1ball();
                     // autoModePrg = new AutoMode5_5ball();
                     break;
