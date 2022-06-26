@@ -10,7 +10,6 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   message_generation
   rio_control_node
-  action_processor_node
   ck_utilities_node
   tf2
   tf2_eigen
@@ -29,8 +28,6 @@ catkin_package(
   message_generation
   message_runtime
   rio_control_node
-  action_processor_node
-  local_planner_node
   ck_utilities_node
   tf2
   tf2_eigen

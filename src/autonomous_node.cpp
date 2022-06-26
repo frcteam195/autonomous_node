@@ -6,10 +6,6 @@
 #include <string>
 #include <mutex>
 
-#include <action_helper/action_helper.hpp>
-
-#include <local_planner_node/PlanReq.h>
-#include <local_planner_node/TrajectoryFollowCue.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 #include <robot_localization/SetPose.h>

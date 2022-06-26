@@ -2,7 +2,6 @@
 #include "ck_utilities/Singleton.hpp"
 #include <atomic>
 #include "ros/ros.h"
-#include <local_planner_node/PlanReq.h>
 
 extern ros::NodeHandle* node;
 
@@ -44,7 +43,6 @@ public:
 private:
     std::atomic<RobotState> robot_state {RobotState::DISABLED};
     std::atomic<AllianceColor> alliance_color {AllianceColor::RED};
-    //ActionHelper* action_helper = nullptr;
     std::atomic<STATE> state {STATE::IDLE};
     int timer = 0;
 

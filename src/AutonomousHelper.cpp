@@ -6,9 +6,6 @@
 #include <mutex>
 #include <sstream>
 
-#include <action_helper/action_helper.hpp>
-
-#include <local_planner_node/PlanReq.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 #include <robot_localization/SetPose.h>
