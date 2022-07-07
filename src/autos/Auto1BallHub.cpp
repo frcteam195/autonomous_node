@@ -7,6 +7,7 @@ hmi_agent_node::HMI_Signals Auto1BallHub::stepStateMachine(bool trajRunning, boo
     (void) traj_id; // Unused
 
     hmi_agent_node::HMI_Signals autoHMISignals;
+    memset(&autoHMISignals, 0, sizeof(hmi_agent_node::HMI_Signals));
     autoHMISignals.retract_intake = true;
 
 	static ros::Time time_state_entered = ros::Time::now();
@@ -23,13 +24,16 @@ hmi_agent_node::HMI_Signals Auto1BallHub::stepStateMachine(bool trajRunning, boo
         case AutoStates::BEGIN_PATH:
         {
             AutonomousHelper::getInstance().drive_trajectory(40);
-            ROS_INFO("Started trajectory id: %d", 0);
+            ROS_INFO("Started trajectory id: %d", 40);
             mNextState = AutoStates::DRIVE_PATH;
             break;
         }
         case AutoStates::DRIVE_PATH:
         {
-            autoHMISignals.intake_rollers = true;
+            if((ros::Time::now() - time_state_entered) > ros::Duration(0.35))
+            {
+                autoHMISignals.intake_rollers = true;
+            }
             
             if (!trajRunning && trajCompleted)
             {
