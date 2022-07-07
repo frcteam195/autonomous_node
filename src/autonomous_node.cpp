@@ -69,9 +69,14 @@ int main(int argc, char **argv)
     {
         if(AutonomousHelper::getInstance().getRobotState() == RobotState::AUTONOMOUS && last_robot_state == RobotState::DISABLED && !autoModePrg)
         {
+            ROS_INFO("Entering AUTONOMOUS from DISABLED!");
+
             traj_follow_active = false;
             traj_follow_complete = false;
             traj_id = -1;
+
+            ROS_INFO("Autonomous #%i detected!", selected_auto_mode);
+
             switch (selected_auto_mode)
             {
                 case 0:
@@ -114,6 +119,7 @@ int main(int argc, char **argv)
                 }
                 default:
                 {
+                    ROS_ERROR("Selected autonomous unsupported!");
                     autoModePrg = nullptr;
                     break;
                 }
@@ -126,6 +132,8 @@ int main(int argc, char **argv)
             {
                 delete autoModePrg;
                 autoModePrg = nullptr;
+
+                ROS_INFO("Autonomous cleaned up!");
             }
         }
 
@@ -137,7 +145,7 @@ int main(int argc, char **argv)
         
         if (AutonomousHelper::getInstance().getRobotState() != RobotState::AUTONOMOUS && last_robot_state == RobotState::AUTONOMOUS)
         {
-            ROS_ERROR("Force stopping trajectory!");
+            ROS_WARN("Force stopping trajectory!");
             AutonomousHelper::getInstance().stop_trajectory();
         }
 
