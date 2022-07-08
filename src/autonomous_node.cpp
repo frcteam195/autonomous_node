@@ -75,7 +75,7 @@ int main(int argc, char **argv)
             traj_follow_complete = false;
             traj_id = -1;
 
-            ROS_INFO("Autonomous #%i detected!", selected_auto_mode);
+            ROS_INFO("Autonomous #%d detected!", selected_auto_mode.load());
 
             switch (selected_auto_mode)
             {
