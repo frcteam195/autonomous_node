@@ -21,14 +21,14 @@ hmi_agent_node::HMI_Signals Auto1BallHub::stepStateMachine(bool trajRunning, boo
 
     switch (mAutoState)
     {
-        case AutoStates::BEGIN_PATH:
+        case AutoStates::BEGIN_INITIAL_PATH:
         {
             AutonomousHelper::getInstance().drive_trajectory(40);
             ROS_INFO("Started trajectory id: %d", 40);
-            mNextState = AutoStates::DRIVE_PATH;
+            mNextState = AutoStates::DRIVE_INITIAL_PATH;
             break;
         }
-        case AutoStates::DRIVE_PATH:
+        case AutoStates::DRIVE_INITIAL_PATH:
         {
             if((ros::Time::now() - time_state_entered) > ros::Duration(0.35))
             {
@@ -54,7 +54,22 @@ hmi_agent_node::HMI_Signals Auto1BallHub::stepStateMachine(bool trajRunning, boo
         {
             autoHMISignals.intake_rollers = true;
             autoHMISignals.allow_shoot = true;
-            if ((ros::Time::now() - time_state_entered) > ros::Duration(5))
+            if ((ros::Time::now() - time_state_entered) > ros::Duration(2))
+            {
+                mNextState = AutoStates::BEGIN_HANGAR_PATH;
+            }
+            break;
+        }
+        case AutoStates::BEGIN_HANGAR_PATH:
+        {
+            AutonomousHelper::getInstance().drive_trajectory(41);
+            ROS_INFO("Started trajectory id: %d", 41);
+            mNextState = AutoStates::DRIVE_HANGAR_PATH;
+            break;
+        }
+        case AutoStates::DRIVE_HANGAR_PATH:
+        {
+            if (!trajRunning && trajCompleted)
             {
                 mNextState = AutoStates::END;
             }
