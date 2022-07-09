@@ -3,7 +3,7 @@
 #include <string>
 
 hmi_agent_node::HMI_Signals Auto2BallSwaggy::stepStateMachine(bool trajRunning, bool trajCompleted, int traj_id)
-{   
+{
     (void) traj_id; // Unused
 
     hmi_agent_node::HMI_Signals autoHMISignals;
@@ -30,7 +30,7 @@ hmi_agent_node::HMI_Signals Auto2BallSwaggy::stepStateMachine(bool trajRunning, 
         }
         case AutoStates::DRIVE_INITIAL_PATH:
         {
-            if (!trajRunning && trajCompleted)
+            if (!trajRunning && trajCompleted && traj_id == 60)
             {
                 mNextState = AutoStates::SHOOT;
             }
@@ -59,7 +59,7 @@ hmi_agent_node::HMI_Signals Auto2BallSwaggy::stepStateMachine(bool trajRunning, 
         }
         case AutoStates::DRIVE_OPONENT_PATH:
         {
-            if (!trajRunning && trajCompleted)
+            if (!trajRunning && trajCompleted && traj_id == 61)
             {
                 mNextState = AutoStates::BEGIN_STASH_PATH;
             }
@@ -73,7 +73,7 @@ hmi_agent_node::HMI_Signals Auto2BallSwaggy::stepStateMachine(bool trajRunning, 
         }
         case AutoStates::DRIVE_STASH_PATH:
         {  
-            if (!trajRunning && trajCompleted)
+            if (!trajRunning && trajCompleted && traj_id == 62)
             {
                 mNextState = AutoStates::STASH;
             }
