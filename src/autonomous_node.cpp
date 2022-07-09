@@ -106,7 +106,7 @@ int main(int argc, char **argv)
                 }
                 case 3:
                 {
-                    AutonomousHelper::getInstance().initialize_position(3);
+                    AutonomousHelper::getInstance().initialize_position(2);
                     std::this_thread::sleep_for(std::chrono::milliseconds(50));
                     autoModePrg = new Auto2BallSwaggy();
                     // autoModePrg = new AutoMode5_5ball();
