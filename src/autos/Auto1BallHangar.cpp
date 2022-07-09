@@ -31,7 +31,7 @@ hmi_agent_node::HMI_Signals Auto1BallHangar::stepStateMachine(bool trajRunning, 
         case AutoStates::DRIVE_INITIAL_PATH:
         {
             autoHMISignals.retract_intake = false;
-            if (!trajRunning && trajCompleted)
+            if (!trajRunning && trajCompleted && traj_id == 50)
             {
                 mNextState = AutoStates::SHOOT;
             }
@@ -49,10 +49,14 @@ hmi_agent_node::HMI_Signals Auto1BallHangar::stepStateMachine(bool trajRunning, 
         }
         case AutoStates::INTAKE_OPPONENT_BALL:
         {
-            autoHMISignals.intake_do_not_eject = false;
-            autoHMISignals.intake_rollers = true;
+            autoHMISignals.intake_do_not_eject = true;
 
-            if ((ros::Time::now() - time_state_entered) > ros::Duration(0.5))
+            if((ros::Time::now() - time_state_entered) > ros::Duration(0.35))
+            {
+                autoHMISignals.intake_rollers = true;
+            }
+
+            if ((ros::Time::now() - time_state_entered) > ros::Duration(0.6))
             {
                 mNextState = AutoStates::BEGIN_HANGAR_PATH;
             }
@@ -60,7 +64,7 @@ hmi_agent_node::HMI_Signals Auto1BallHangar::stepStateMachine(bool trajRunning, 
         }
         case AutoStates::BEGIN_HANGAR_PATH:
         {
-            autoHMISignals.intake_do_not_eject = false;
+            autoHMISignals.intake_do_not_eject = true;
             autoHMISignals.intake_rollers = true;
 
             AutonomousHelper::getInstance().drive_trajectory(51);
@@ -69,10 +73,10 @@ hmi_agent_node::HMI_Signals Auto1BallHangar::stepStateMachine(bool trajRunning, 
         }
         case AutoStates::DRIVE_HANGAR_PATH:
         {   
-            autoHMISignals.intake_do_not_eject = false;
+            autoHMISignals.intake_do_not_eject = true;
             autoHMISignals.intake_rollers = true;
 
-            if (!trajRunning && trajCompleted)
+            if (!trajRunning && trajCompleted && traj_id == 51)
             {
                 mNextState = AutoStates::BEGIN_STASH_PATH;
             }
@@ -80,15 +84,15 @@ hmi_agent_node::HMI_Signals Auto1BallHangar::stepStateMachine(bool trajRunning, 
         }
         case AutoStates::BEGIN_STASH_PATH:
         {
-            autoHMISignals.intake_do_not_eject = false;
+            autoHMISignals.intake_do_not_eject = true;
             AutonomousHelper::getInstance().drive_trajectory(52);
             mNextState = AutoStates::DRIVE_STASH_PATH;
             break;
         }
         case AutoStates::DRIVE_STASH_PATH:
         {  
-            autoHMISignals.intake_do_not_eject = false;
-            if (!trajRunning && trajCompleted)
+            autoHMISignals.intake_do_not_eject = true;
+            if (!trajRunning && trajCompleted && traj_id == 52)
             {
                 mNextState = AutoStates::STASH;
             }
