@@ -18,6 +18,8 @@
 #include "autos/AutoMode3_1ball.hpp"
 #include "autos/AutoMode4_1ball.hpp"
 #include "autos/Auto1BallHub.hpp"
+#include "autos/Auto1BallHangar.hpp"
+#include "autos/Auto2BallSwaggy.hpp"
 #include "autos/AutoFollowPath.hpp"
 
 #include <tf2/LinearMath/Quaternion.h>
@@ -106,7 +108,7 @@ int main(int argc, char **argv)
                 {
                     AutonomousHelper::getInstance().initialize_position(3);
                     std::this_thread::sleep_for(std::chrono::milliseconds(50));
-                    autoModePrg = new AutoMode4_1ball();
+                    autoModePrg = new Auto2BallSwaggy();
                     // autoModePrg = new AutoMode5_5ball();
                     break;
                 }
