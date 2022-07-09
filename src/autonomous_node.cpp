@@ -109,7 +109,6 @@ int main(int argc, char **argv)
                     AutonomousHelper::getInstance().initialize_position(2);
                     std::this_thread::sleep_for(std::chrono::milliseconds(50));
                     autoModePrg = new Auto2BallSwaggy();
-                    // autoModePrg = new AutoMode5_5ball();
                     break;
                 }
                 case 4:
@@ -117,6 +116,13 @@ int main(int argc, char **argv)
                     AutonomousHelper::getInstance().initialize_position(4);
                     std::this_thread::sleep_for(std::chrono::milliseconds(50));
                     autoModePrg = new Auto1BallHangar();
+                    break;
+                }
+                case 5:
+                {
+                    AutonomousHelper::getInstance().initialize_position(4);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+                    autoModePrg = new Auto1BallHub();
                     break;
                 }
                 default:

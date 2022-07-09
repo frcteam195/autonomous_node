@@ -11,8 +11,9 @@ public:
         DRIVE_INITIAL_PATH,
         GET_OPPONENT_BALL,
         SHOOT,
-        BEGIN_HANGAR_PATH,
-        DRIVE_HANGAR_PATH,
+        BEGIN_HUB_PATH,
+        DRIVE_HUB_PATH,
+        STASH,
         END
     };
 

@@ -3,9 +3,7 @@
 #include <string>
 
 hmi_agent_node::HMI_Signals Auto1BallHangar::stepStateMachine(bool trajRunning, bool trajCompleted, int traj_id)
-{   
-    (void) traj_id; // Unused
-
+{
     hmi_agent_node::HMI_Signals autoHMISignals;
     memset(&autoHMISignals, 0, sizeof(hmi_agent_node::HMI_Signals));
     autoHMISignals.retract_intake = true;
@@ -29,8 +27,14 @@ hmi_agent_node::HMI_Signals Auto1BallHangar::stepStateMachine(bool trajRunning, 
             break;
         }
         case AutoStates::DRIVE_INITIAL_PATH:
-        {
+        {   
             autoHMISignals.retract_intake = false;
+
+            if((ros::Time::now() - time_state_entered) < ros::Duration(0.1))
+            {
+                autoHMISignals.intake_rollers = true;
+            }
+
             if (!trajRunning && trajCompleted && traj_id == 50)
             {
                 mNextState = AutoStates::SHOOT;
