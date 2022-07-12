@@ -55,6 +55,11 @@ void AutonomousHelper::initialize_position(int auto_id)
             initial_pose.request.pose.header.frame_id = alliance_color == AllianceColor::RED ? "auto_4_red_link" : "auto_4_blue_link";
             break;
         }
+        case 5:
+        {
+            initial_pose.request.pose.header.frame_id = alliance_color == AllianceColor::RED ? "auto_5_red_link" : "auto_5_blue_link";
+            break;
+        }
         default:
         {
             break;
