@@ -21,6 +21,7 @@
 #include "autos/Auto1BallHangar.hpp"
 #include "autos/Auto2BallSwaggy.hpp"
 #include "autos/AutoFollowPath.hpp"
+#include "autos/Auto5BallVeterans.hpp"
 
 #include <tf2/LinearMath/Quaternion.h>
 
@@ -129,7 +130,7 @@ int main(int argc, char **argv)
                 {
                     AutonomousHelper::getInstance().initialize_position(5);
                     std::this_thread::sleep_for(std::chrono::milliseconds(50));
-                    autoModePrg = new Auto1BallHub();
+                    autoModePrg = new Auto5BallVeterans();
                     break;
                 }
                 default:
