@@ -22,7 +22,7 @@
 static tf2_ros::TransformListener *tfListener;
 static tf2_ros::Buffer tfBuffer;
 
-void AutonomousHelper::initialize_position(int auto_id)
+void AutonomousHelper::initialize_position(StartPosition start_pos)
 {
     static ros::ServiceClient position_reset_service = node->serviceClient<robot_localization::SetPose>("/set_pose");
     
@@ -33,35 +33,31 @@ void AutonomousHelper::initialize_position(int auto_id)
     // ss_auto << "auto_" << auto_id << "_" << alliance_color_str << "_link" << std::ends;
     // initial_pose.request.pose.header.frame_id = ss_auto.str();
 
-    switch (auto_id)
+    switch (start_pos)
     {
-        case 1:
+        case StartPosition::POS_1:
         {
             initial_pose.request.pose.header.frame_id = alliance_color == AllianceColor::RED ? "auto_1_red_link" : "auto_1_blue_link";
             break;
         }
-        case 2:
+        case StartPosition::POS_2:
         {
             initial_pose.request.pose.header.frame_id = alliance_color == AllianceColor::RED ? "auto_2_red_link" : "auto_2_blue_link";
             break;
         }
-        case 3:
+        case StartPosition::POS_3:
         {
             initial_pose.request.pose.header.frame_id = alliance_color == AllianceColor::RED ? "auto_3_red_link" : "auto_3_blue_link";
             break;
         }
-        case 4:
+        case StartPosition::POS_4:
         {
             initial_pose.request.pose.header.frame_id = alliance_color == AllianceColor::RED ? "auto_4_red_link" : "auto_4_blue_link";
             break;
         }
-        case 5:
+        case StartPosition::POS_5:
         {
             initial_pose.request.pose.header.frame_id = alliance_color == AllianceColor::RED ? "auto_5_red_link" : "auto_5_blue_link";
-            break;
-        }
-        default:
-        {
             break;
         }
     }

@@ -84,7 +84,7 @@ int main(int argc, char **argv)
             {
                 case 0:
                 {
-                    AutonomousHelper::getInstance().initialize_position(1);
+                    AutonomousHelper::getInstance().initialize_position(StartPosition::POS_1);
                     std::this_thread::sleep_for(std::chrono::milliseconds(50));
                     // autoModePrg = new AutoMode1_5ball_Alt();
                     autoModePrg = new AutoMode5_5ball();
@@ -93,42 +93,43 @@ int main(int argc, char **argv)
                 }
                 case 1:
                 {
-                    AutonomousHelper::getInstance().initialize_position(2);
+                    AutonomousHelper::getInstance().initialize_position(StartPosition::POS_2);
                     std::this_thread::sleep_for(std::chrono::milliseconds(50));
                     autoModePrg = new AutoMode2_2ball();
                     break;
                 }
-                case 2:
-                {
-                    AutonomousHelper::getInstance().initialize_position(3);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(50));
-                    autoModePrg = new AutoMode3_1ball();
-                    break;
-                }
+                //Disable unused auto
+                // case 2:
+                // {
+                //     AutonomousHelper::getInstance().initialize_position(3);
+                //     std::this_thread::sleep_for(std::chrono::milliseconds(50));
+                //     autoModePrg = new AutoMode3_1ball();
+                //     break;
+                // }
                 case 3:
                 {
-                    AutonomousHelper::getInstance().initialize_position(2);
+                    AutonomousHelper::getInstance().initialize_position(StartPosition::POS_2);
                     std::this_thread::sleep_for(std::chrono::milliseconds(50));
                     autoModePrg = new Auto2BallSwaggy();
                     break;
                 }
                 case 4:
                 {
-                    AutonomousHelper::getInstance().initialize_position(4);
+                    AutonomousHelper::getInstance().initialize_position(StartPosition::POS_4);
                     std::this_thread::sleep_for(std::chrono::milliseconds(50));
                     autoModePrg = new Auto1BallHangar();
                     break;
                 }
                 case 5:
                 {
-                    AutonomousHelper::getInstance().initialize_position(4);
+                    AutonomousHelper::getInstance().initialize_position(StartPosition::POS_4);
                     std::this_thread::sleep_for(std::chrono::milliseconds(50));
                     autoModePrg = new Auto1BallHub();
                     break;
                 }
                 case 6:
                 {
-                    AutonomousHelper::getInstance().initialize_position(5);
+                    AutonomousHelper::getInstance().initialize_position(StartPosition::POS_5);
                     std::this_thread::sleep_for(std::chrono::milliseconds(50));
                     autoModePrg = new Auto5BallVeterans();
                     break;
