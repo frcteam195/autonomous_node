@@ -125,6 +125,13 @@ int main(int argc, char **argv)
                     autoModePrg = new Auto1BallHub();
                     break;
                 }
+                case 6:
+                {
+                    AutonomousHelper::getInstance().initialize_position(5);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+                    autoModePrg = new Auto1BallHub();
+                    break;
+                }
                 default:
                 {
                     ROS_ERROR("Selected autonomous unsupported!");
