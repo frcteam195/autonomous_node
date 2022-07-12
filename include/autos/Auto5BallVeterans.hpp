@@ -2,7 +2,7 @@
 #include "autos/AutoBase.hpp"
 #include "hmi_agent_node/HMI_Signals.h"
 
-class Auto1BallHub : public AutoBase
+class Auto5BallVeterans : public AutoBase
 {
 public:
     enum class AutoStates : int
@@ -10,10 +10,11 @@ public:
         BEGIN_INITIAL_PATH,
         DRIVE_INITIAL_PATH,
         SHOOT,
-        INTAKE_OPPONENT_BALL,
-        BEGIN_STASH_PATH,
-        DRIVE_STASH_PATH,
-        STASH,
+        BEGIN_HUMAN_PATH,
+        DRIVE_HUMAN_PATH,
+        BEGIN_RETURN_PATH,
+        DRIVE_RETURN_PATH,
+        SHOOT2,
         END
     };
 

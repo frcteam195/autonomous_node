@@ -1,8 +1,8 @@
-#include "autos/Auto1BallHub.hpp"
+#include "autos/Auto5BallVeterans.hpp"
 #include "AutonomousHelper.hpp"
 #include <string>
 
-hmi_agent_node::HMI_Signals Auto1BallHub::stepStateMachine(bool trajRunning, bool trajCompleted, int traj_id)
+hmi_agent_node::HMI_Signals Auto5BallVeterans::stepStateMachine(bool trajRunning, bool trajCompleted, int traj_id)
 {
     hmi_agent_node::HMI_Signals autoHMISignals;
     memset(&autoHMISignals, 0, sizeof(hmi_agent_node::HMI_Signals));
@@ -22,20 +22,18 @@ hmi_agent_node::HMI_Signals Auto1BallHub::stepStateMachine(bool trajRunning, boo
         case AutoStates::BEGIN_INITIAL_PATH:
         {
             autoHMISignals.retract_intake = false;
-            AutonomousHelper::getInstance().drive_trajectory(40);
+            AutonomousHelper::getInstance().drive_trajectory(71);
             mNextState = AutoStates::DRIVE_INITIAL_PATH;
             break;
         }
         case AutoStates::DRIVE_INITIAL_PATH:
-        {
-            autoHMISignals.retract_intake = false;
-
-            if((ros::Time::now() - time_state_entered) > ros::Duration(0.1))
+        {   
+            if((ros::Time::now() - time_state_entered) > ros::Duration(0.35))
             {
                 autoHMISignals.intake_rollers = true;
             }
-            
-            if (!trajRunning && trajCompleted && traj_id == 40)
+
+            if (!trajRunning && trajCompleted && traj_id == 71)
             {
                 mNextState = AutoStates::SHOOT;
             }
@@ -43,49 +41,53 @@ hmi_agent_node::HMI_Signals Auto1BallHub::stepStateMachine(bool trajRunning, boo
         }
         case AutoStates::SHOOT:
         {
-            autoHMISignals.intake_rollers = true;
-            autoHMISignals.intake_do_not_eject = true;
             autoHMISignals.allow_shoot = true;
+            autoHMISignals.intake_rollers = true;
+
             if ((ros::Time::now() - time_state_entered) > ros::Duration(2))
             {
-                mNextState = AutoStates::INTAKE_OPPONENT_BALL;
+                mNextState = AutoStates::BEGIN_HUMAN_PATH;
             }
             break;
         }
-        case AutoStates::INTAKE_OPPONENT_BALL:
+        
+        case AutoStates::BEGIN_HUMAN_PATH:
         {
-            autoHMISignals.intake_do_not_eject = true;
+            AutonomousHelper::getInstance().drive_trajectory(72);
+            mNextState = AutoStates::DRIVE_HUMAN_PATH;
+            break;
+        }
+        case AutoStates::DRIVE_HUMAN_PATH:
+        {   
+            autoHMISignals.intake_rollers = true;
 
-            if((ros::Time::now() - time_state_entered) > ros::Duration(0.35))
+            if (!trajRunning && trajCompleted && traj_id == 72)
             {
-                autoHMISignals.intake_rollers = true;
-            }
-
-            if ((ros::Time::now() - time_state_entered) > ros::Duration(0.6))
-            {
-                mNextState = AutoStates::BEGIN_STASH_PATH;
+                mNextState = AutoStates::BEGIN_RETURN_PATH;
             }
             break;
         }
-        case AutoStates::BEGIN_STASH_PATH:
+        case AutoStates::BEGIN_RETURN_PATH:
         {
-            autoHMISignals.intake_do_not_eject = true;
-            AutonomousHelper::getInstance().drive_trajectory(41);
-            mNextState = AutoStates::DRIVE_STASH_PATH;
+            AutonomousHelper::getInstance().drive_trajectory(73);
+            mNextState = AutoStates::DRIVE_RETURN_PATH;
             break;
         }
-        case AutoStates::DRIVE_STASH_PATH:
+        case AutoStates::DRIVE_RETURN_PATH:
         {  
-            autoHMISignals.intake_do_not_eject = true;
-            if (!trajRunning && trajCompleted && traj_id == 41)
+            autoHMISignals.intake_rollers = true;
+
+            if (!trajRunning && trajCompleted && traj_id == 73)
             {
-                mNextState = AutoStates::STASH;
+                mNextState = AutoStates::SHOOT2;
             }
             break;
         }
-        case AutoStates::STASH:
+        case AutoStates::SHOOT2:
         {
-            autoHMISignals.manual_outake_back = true;
+            autoHMISignals.allow_shoot = true;
+            autoHMISignals.intake_rollers = true;
+
             if ((ros::Time::now() - time_state_entered) > ros::Duration(2))
             {
                 mNextState = AutoStates::END;
