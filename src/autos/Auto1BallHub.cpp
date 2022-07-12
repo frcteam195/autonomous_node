@@ -30,7 +30,7 @@ hmi_agent_node::HMI_Signals Auto1BallHub::stepStateMachine(bool trajRunning, boo
         {
             autoHMISignals.retract_intake = false;
 
-            if((ros::Time::now() - time_state_entered) > ros::Duration(0.1))
+            if((ros::Time::now() - time_state_entered) < ros::Duration(0.1))
             {
                 autoHMISignals.intake_rollers = true;
             }

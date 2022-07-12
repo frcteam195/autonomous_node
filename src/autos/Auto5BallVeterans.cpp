@@ -22,7 +22,7 @@ hmi_agent_node::HMI_Signals Auto5BallVeterans::stepStateMachine(bool trajRunning
         case AutoStates::BEGIN_INITIAL_PATH:
         {
             autoHMISignals.retract_intake = false;
-            AutonomousHelper::getInstance().drive_trajectory(71);
+            AutonomousHelper::getInstance().drive_trajectory(70);
             mNextState = AutoStates::DRIVE_INITIAL_PATH;
             break;
         }
@@ -33,7 +33,7 @@ hmi_agent_node::HMI_Signals Auto5BallVeterans::stepStateMachine(bool trajRunning
                 autoHMISignals.intake_rollers = true;
             }
 
-            if (!trajRunning && trajCompleted && traj_id == 71)
+            if (!trajRunning && trajCompleted && traj_id == 70)
             {
                 mNextState = AutoStates::SHOOT;
             }
@@ -43,8 +43,9 @@ hmi_agent_node::HMI_Signals Auto5BallVeterans::stepStateMachine(bool trajRunning
         {
             autoHMISignals.allow_shoot = true;
             autoHMISignals.intake_rollers = true;
+            autoHMISignals.shoot_3ball = true;
 
-            if ((ros::Time::now() - time_state_entered) > ros::Duration(2))
+            if ((ros::Time::now() - time_state_entered) > ros::Duration(3))
             {
                 mNextState = AutoStates::BEGIN_HUMAN_PATH;
             }
@@ -53,7 +54,7 @@ hmi_agent_node::HMI_Signals Auto5BallVeterans::stepStateMachine(bool trajRunning
         
         case AutoStates::BEGIN_HUMAN_PATH:
         {
-            AutonomousHelper::getInstance().drive_trajectory(72);
+            AutonomousHelper::getInstance().drive_trajectory(71);
             mNextState = AutoStates::DRIVE_HUMAN_PATH;
             break;
         }
@@ -61,7 +62,7 @@ hmi_agent_node::HMI_Signals Auto5BallVeterans::stepStateMachine(bool trajRunning
         {   
             autoHMISignals.intake_rollers = true;
 
-            if (!trajRunning && trajCompleted && traj_id == 72)
+            if (!trajRunning && trajCompleted && traj_id == 71)
             {
                 mNextState = AutoStates::BEGIN_RETURN_PATH;
             }
@@ -69,7 +70,7 @@ hmi_agent_node::HMI_Signals Auto5BallVeterans::stepStateMachine(bool trajRunning
         }
         case AutoStates::BEGIN_RETURN_PATH:
         {
-            AutonomousHelper::getInstance().drive_trajectory(73);
+            AutonomousHelper::getInstance().drive_trajectory(72);
             mNextState = AutoStates::DRIVE_RETURN_PATH;
             break;
         }
@@ -77,7 +78,7 @@ hmi_agent_node::HMI_Signals Auto5BallVeterans::stepStateMachine(bool trajRunning
         {  
             autoHMISignals.intake_rollers = true;
 
-            if (!trajRunning && trajCompleted && traj_id == 73)
+            if (!trajRunning && trajCompleted && traj_id == 72)
             {
                 mNextState = AutoStates::SHOOT2;
             }
