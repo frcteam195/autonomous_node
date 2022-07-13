@@ -19,49 +19,32 @@ hmi_agent_node::HMI_Signals Auto1BallHub::stepStateMachine(bool trajRunning, boo
 
     switch (mAutoState)
     {
+        case AutoStates::SHOOT:
+        {
+            autoHMISignals.intake_rollers = true;
+            autoHMISignals.intake_do_not_eject = true;
+            autoHMISignals.allow_shoot = true;
+            if ((ros::Time::now() - time_state_entered) > ros::Duration(4.0))
+            {
+                mNextState = AutoStates::BEGIN_INITIAL_PATH;
+            }
+            break;
+        }
         case AutoStates::BEGIN_INITIAL_PATH:
         {
-            autoHMISignals.retract_intake = false;
             AutonomousHelper::getInstance().drive_trajectory(40);
             mNextState = AutoStates::DRIVE_INITIAL_PATH;
             break;
         }
         case AutoStates::DRIVE_INITIAL_PATH:
         {
-            autoHMISignals.retract_intake = false;
-
-            if((ros::Time::now() - time_state_entered) < ros::Duration(0.1))
-            {
-                autoHMISignals.intake_rollers = true;
-            }
-            
-            if (!trajRunning && trajCompleted && traj_id == 40)
-            {
-                mNextState = AutoStates::SHOOT;
-            }
-            break;
-        }
-        case AutoStates::SHOOT:
-        {
-            autoHMISignals.intake_rollers = true;
-            autoHMISignals.intake_do_not_eject = true;
-            autoHMISignals.allow_shoot = true;
-            if ((ros::Time::now() - time_state_entered) > ros::Duration(2))
-            {
-                mNextState = AutoStates::INTAKE_OPPONENT_BALL;
-            }
-            break;
-        }
-        case AutoStates::INTAKE_OPPONENT_BALL:
-        {
-            autoHMISignals.intake_do_not_eject = true;
-
             if((ros::Time::now() - time_state_entered) > ros::Duration(0.35))
             {
                 autoHMISignals.intake_rollers = true;
+                autoHMISignals.intake_do_not_eject = true;
             }
-
-            if ((ros::Time::now() - time_state_entered) > ros::Duration(0.6))
+            
+            if (!trajRunning && trajCompleted && traj_id == 40)
             {
                 mNextState = AutoStates::BEGIN_STASH_PATH;
             }
