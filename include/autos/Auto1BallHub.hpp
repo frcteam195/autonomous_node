@@ -1,6 +1,7 @@
 #pragma once
 #include "autos/AutoBase.hpp"
 #include "hmi_agent_node/HMI_Signals.h"
+#include "ros/ros.h"
 
 class Auto1BallHub : public AutoBase
 {
@@ -21,4 +22,5 @@ public:
 private:
     AutoStates mAutoState{AutoStates::SHOOT};
     AutoStates mNextState{AutoStates::SHOOT};
+    bool loop_run_once = false;
 };

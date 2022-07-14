@@ -9,6 +9,12 @@ hmi_agent_node::HMI_Signals Auto1BallHub::stepStateMachine(bool trajRunning, boo
     autoHMISignals.retract_intake = true;
 
 	static ros::Time time_state_entered = ros::Time::now();
+    if (!loop_run_once)
+    {
+        time_state_entered = ros::Time::now();
+        loop_run_once = true;
+    }
+    
 	if(mNextState != mAutoState)
 	{
         ROS_INFO("Running state: %d", (int)mAutoState);
