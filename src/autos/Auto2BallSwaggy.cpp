@@ -24,12 +24,14 @@ hmi_agent_node::HMI_Signals Auto2BallSwaggy::stepStateMachine(bool trajRunning, 
         {
             AutonomousHelper::getInstance().drive_trajectory(60);
             mNextState = AutoStates::DRIVE_INITIAL_PATH;
-            autoHMISignals.intake_rollers = true;
             break;
         }
         case AutoStates::DRIVE_INITIAL_PATH:
-        {
-            autoHMISignals.intake_rollers = true;
+        {           
+            if((ros::Time::now() - time_state_entered) > ros::Duration(0.35))
+            {
+                autoHMISignals.intake_rollers = true;
+            }
 
             if (!trajRunning && trajCompleted && traj_id == 60)
             {
