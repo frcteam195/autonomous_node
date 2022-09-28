@@ -4,8 +4,8 @@
 
 hmi_agent_node::HMI_Signals Auto5BallVeterans::stepStateMachine(bool trajRunning, bool trajCompleted, int traj_id)
 {
-    hmi_agent_node::HMI_Signals autoHMISignals;
-    memset(&autoHMISignals, 0, sizeof(hmi_agent_node::HMI_Signals));
+    hmi_agent_node::HMI_Signals autoHMISignals = {};
+    // memset(&autoHMISignals, 0, sizeof(hmi_agent_node::HMI_Signals));
     autoHMISignals.retract_intake = true;
 
 	static ros::Time time_state_entered = ros::Time::now();

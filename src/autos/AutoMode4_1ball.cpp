@@ -8,7 +8,7 @@ hmi_agent_node::HMI_Signals AutoMode4_1ball::stepStateMachine(bool trajRunning, 
     (void) trajCompleted;
     (void) traj_id;
     
-    hmi_agent_node::HMI_Signals autoHMISignals;
+    hmi_agent_node::HMI_Signals autoHMISignals = {};
 
 	static ros::Time time_state_entered = ros::Time::now();
     static int intake_counter = 0;

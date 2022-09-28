@@ -10,7 +10,7 @@ hmi_agent_node::HMI_Signals SimpleAuto::stepStateMachine(bool trajRunning, bool 
     (void) trajCompleted;
     (void) traj_id;
     
-    hmi_agent_node::HMI_Signals autoHMISignals;
+    hmi_agent_node::HMI_Signals autoHMISignals = {};
 #ifdef AUTO_ENABLED
     autoHMISignals.allow_shoot = true;
     autoHMISignals.intake_rollers = true;

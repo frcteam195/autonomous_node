@@ -8,8 +8,8 @@ hmi_agent_node::HMI_Signals AutoMode1_5ball_Alt::stepStateMachine(bool trajRunni
     (void) trajCompleted;
     (void) traj_id;
     
-    hmi_agent_node::HMI_Signals autoHMISignals;
-    memset(&autoHMISignals, 0, sizeof(hmi_agent_node::HMI_Signals));
+    hmi_agent_node::HMI_Signals autoHMISignals = {};
+    // memset(&autoHMISignals, 0, sizeof(hmi_agent_node::HMI_Signals));
 
     autoHMISignals.retract_intake = true;
 

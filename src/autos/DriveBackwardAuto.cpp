@@ -8,7 +8,7 @@ hmi_agent_node::HMI_Signals DriveBackwardAuto::stepStateMachine(bool trajRunning
     (void) trajCompleted;
     (void) traj_id;
     
-    hmi_agent_node::HMI_Signals autoHMISignals;
+    hmi_agent_node::HMI_Signals autoHMISignals = {};
     autoHMISignals.allow_shoot = true;
     autoHMISignals.intake_rollers = true;
     autoHMISignals.retract_intake = true;
