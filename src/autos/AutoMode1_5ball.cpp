@@ -2,13 +2,13 @@
 #include "AutonomousHelper.hpp"
 #include <string>
 
-hmi_agent_node::HMI_Signals AutoMode1_5ball::stepStateMachine(bool trajRunning, bool trajCompleted, int traj_id)
+ck_ros_msgs_node::HMI_Signals AutoMode1_5ball::stepStateMachine(bool trajRunning, bool trajCompleted, int traj_id)
 {
     (void) trajRunning;
     (void) trajCompleted;
     (void) traj_id;
     
-    hmi_agent_node::HMI_Signals autoHMISignals = {};
+    ck_ros_msgs_node::HMI_Signals autoHMISignals = {};
     autoHMISignals.retract_intake = true;
 
 	static ros::Time time_state_entered = ros::Time::now();

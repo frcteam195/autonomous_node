@@ -1,6 +1,6 @@
 #pragma once
 #include "autos/AutoBase.hpp"
-#include "hmi_agent_node/HMI_Signals.h"
+#include "ck_ros_msgs_node/HMI_Signals.h"
 
 class AutoMode1_5ball : public AutoBase
 {
@@ -21,7 +21,7 @@ public:
         END
     };
 
-    hmi_agent_node::HMI_Signals stepStateMachine(bool trajRunning, bool trajCompleted, int traj_id) override;
+    ck_ros_msgs_node::HMI_Signals stepStateMachine(bool trajRunning, bool trajCompleted, int traj_id) override;
 
 private:
     AutoMode1States mAutoState {AutoMode1States::BEGIN_PATH_1};

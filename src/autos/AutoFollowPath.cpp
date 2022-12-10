@@ -2,14 +2,14 @@
 #include "AutonomousHelper.hpp"
 #include <string>
 
-hmi_agent_node::HMI_Signals AutoFollowPath::stepStateMachine(bool trajRunning, bool trajCompleted, int traj_id)
+ck_ros_msgs_node::HMI_Signals AutoFollowPath::stepStateMachine(bool trajRunning, bool trajCompleted, int traj_id)
 {    
     // bool test = !trajRunning && trajCompleted;
 
     // ROS_ERROR("Running: %d Completed: %d ID: %d", trajRunning, trajCompleted, traj_id);
     // ROS_ERROR("Is finished: %d\n\n", test);
 
-    hmi_agent_node::HMI_Signals autoHMISignals = {};
+    ck_ros_msgs_node::HMI_Signals autoHMISignals = {};
     // memset(&autoHMISignals, 0, sizeof(hmi_agent_node::HMI_Signals));
 
     autoHMISignals.retract_intake = false;

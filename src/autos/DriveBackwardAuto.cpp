@@ -2,13 +2,13 @@
 #include "AutonomousHelper.hpp"
 #include <string>
 
-hmi_agent_node::HMI_Signals DriveBackwardAuto::stepStateMachine(bool trajRunning, bool trajCompleted, int traj_id)
+ck_ros_msgs_node::HMI_Signals DriveBackwardAuto::stepStateMachine(bool trajRunning, bool trajCompleted, int traj_id)
 {
     (void) trajRunning;
     (void) trajCompleted;
     (void) traj_id;
     
-    hmi_agent_node::HMI_Signals autoHMISignals = {};
+    ck_ros_msgs_node::HMI_Signals autoHMISignals = {};
     autoHMISignals.allow_shoot = true;
     autoHMISignals.intake_rollers = true;
     autoHMISignals.retract_intake = true;

@@ -4,13 +4,13 @@
 
 #define AUTO_ENABLED
 
-hmi_agent_node::HMI_Signals SimpleAuto::stepStateMachine(bool trajRunning, bool trajCompleted, int traj_id)
+ck_ros_msgs_node::HMI_Signals SimpleAuto::stepStateMachine(bool trajRunning, bool trajCompleted, int traj_id)
 {
     (void) trajRunning;
     (void) trajCompleted;
     (void) traj_id;
     
-    hmi_agent_node::HMI_Signals autoHMISignals = {};
+    ck_ros_msgs_node::HMI_Signals autoHMISignals = {};
 #ifdef AUTO_ENABLED
     autoHMISignals.allow_shoot = true;
     autoHMISignals.intake_rollers = true;

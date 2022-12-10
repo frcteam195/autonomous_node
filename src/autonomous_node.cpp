@@ -62,12 +62,12 @@ int main(int argc, char **argv)
 
     static ros::Subscriber robot_status_subscriber = node->subscribe("/RobotStatus", 1, robot_status_callback, ros::TransportHints().tcpNoDelay());
     static ros::Subscriber q_planner_subscriber = node->subscribe("/QuesadillaPlannerOutput", 1, planner_callback, ros::TransportHints().tcpNoDelay());
-    static ros::Publisher auto_hmi_publisher = node->advertise<hmi_agent_node::HMI_Signals>("/HMISignals", 1);
+    static ros::Publisher auto_hmi_publisher = node->advertise<ck_ros_msgs_node::HMI_Signals>("/HMISignals", 1);
     (void)AutonomousHelper::getInstance();
 
     AutoBase* autoModePrg = nullptr;
     RobotState last_robot_state = RobotState::DISABLED;
-    hmi_agent_node::HMI_Signals auto_hmi_signals;
+    ck_ros_msgs_node::HMI_Signals auto_hmi_signals;
     while( ros::ok() )
     {
         if(AutonomousHelper::getInstance().getRobotState() == RobotState::AUTONOMOUS && last_robot_state == RobotState::DISABLED && !autoModePrg)

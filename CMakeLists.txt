@@ -9,6 +9,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   geometry_msgs
   message_generation
+  ck_ros_msgs_node
   rio_control_node
   ck_utilities_node
   tf2
@@ -27,6 +28,7 @@ catkin_package(
   roscpp
   message_generation
   message_runtime
+  ck_ros_msgs_node
   rio_control_node
   ck_utilities_node
   tf2
