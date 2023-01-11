@@ -18,6 +18,7 @@
 #include "geometry_msgs/PoseStamped.h"
 #include <geometry_msgs/TransformStamped.h>
 #include <quesadilla_auto_node/Planner_Input.h>
+#include <trajectory_follower_node/StartTrajectory.h>
 
 static tf2_ros::TransformListener *tfListener;
 static tf2_ros::Buffer tfBuffer;
@@ -88,6 +89,17 @@ void AutonomousHelper::initialize_position(StartPosition start_pos)
     else
     {
         ROS_ERROR("FAILED TO SET INITIAL POSITION COMING OUT OF DISABLED!");
+    }
+}
+
+void AutonomousHelper::cpp_drive_trajectory(std::string traj_name)
+{
+    static ros::ServiceClient traj_service = node->serviceClient<trajectory_follower_node::StartTrajectory>("start_trajectory");
+    trajectory_follower_node::StartTrajectory msg;
+    msg.request.traj_name = traj_name;
+    if (!traj_service.call(msg))
+    {
+        ROS_ERROR("Failed to start trajectory");
     }
 }
 

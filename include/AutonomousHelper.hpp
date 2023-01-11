@@ -1,6 +1,7 @@
 #pragma once
 #include "ck_utilities/Singleton.hpp"
 #include <atomic>
+#include <string>
 #include "ros/ros.h"
 
 extern ros::NodeHandle* node;
@@ -39,6 +40,8 @@ class AutonomousHelper : public Singleton<AutonomousHelper>
 {
     friend Singleton;
 public:
+    void cpp_drive_trajectory(std::string traj_name);
+
     void drive_trajectory(int trajectory_id);
     void stop_trajectory();
     void initialize_position(StartPosition start_pos);

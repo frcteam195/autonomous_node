@@ -28,6 +28,7 @@
 #include "AutonomousHelper.hpp"
 #include <atomic>
 #include <quesadilla_auto_node/Planner_Output.h>
+#include <trajectory_follower_node/FollowerStatus.h>
 
 #include "ck_ros_msgs_node/AutonomousConfiguration.h"
 
@@ -43,6 +44,13 @@ void planner_callback (const quesadilla_auto_node::Planner_Output &msg)
 {
     traj_follow_active = msg.trajectory_active;
     traj_follow_complete = msg.trajectory_completed;
+    traj_id = msg.trajectory_id;
+}
+
+void traj_follower_status_callback(const trajectory_follower_node::FollowerStatus& msg)
+{
+    traj_follow_active = msg.trajectoryActive;
+    traj_follow_complete = msg.trajectoryCompleted;
     traj_id = msg.trajectory_id;
 }
 
@@ -63,6 +71,7 @@ int main(int argc, char **argv)
 
     static ros::Subscriber robot_status_subscriber = node->subscribe("/RobotStatus", 1, robot_status_callback, ros::TransportHints().tcpNoDelay());
     static ros::Subscriber q_planner_subscriber = node->subscribe("/QuesadillaPlannerOutput", 1, planner_callback, ros::TransportHints().tcpNoDelay());
+    static ros::Subscriber traj_follower_status_subscriber = node->subscribe("/TrajcetoryFollowerStatus", 1, traj_follower_status_callback, ros::TransportHints().tcpNoDelay());
     static ros::Publisher auto_hmi_publisher = node->advertise<ck_ros_msgs_node::HMI_Signals>("/HMISignals", 1);
     static ros::Publisher auto_configuration_publisher = node->advertise<ck_ros_msgs_node::AutonomousConfiguration>("/AutonomousConfiguration", 1);
     (void)AutonomousHelper::getInstance();
