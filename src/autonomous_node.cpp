@@ -29,6 +29,7 @@
 #include <atomic>
 #include <quesadilla_auto_node/Planner_Output.h>
 
+#include "ck_ros_msgs_node/AutonomousConfiguration.h"
 
 #define RATE (100)
 
@@ -63,11 +64,14 @@ int main(int argc, char **argv)
     static ros::Subscriber robot_status_subscriber = node->subscribe("/RobotStatus", 1, robot_status_callback, ros::TransportHints().tcpNoDelay());
     static ros::Subscriber q_planner_subscriber = node->subscribe("/QuesadillaPlannerOutput", 1, planner_callback, ros::TransportHints().tcpNoDelay());
     static ros::Publisher auto_hmi_publisher = node->advertise<ck_ros_msgs_node::HMI_Signals>("/HMISignals", 1);
+    static ros::Publisher auto_configuration_publisher = node->advertise<ck_ros_msgs_node::AutonomousConfiguration>("/AutonomousConfiguration", 1);
     (void)AutonomousHelper::getInstance();
 
     AutoBase* autoModePrg = nullptr;
     RobotState last_robot_state = RobotState::DISABLED;
     ck_ros_msgs_node::HMI_Signals auto_hmi_signals;
+    ck_ros_msgs_node::AutonomousConfiguration autonomous_configuration_options;
+
     while( ros::ok() )
     {
         if(AutonomousHelper::getInstance().getRobotState() == RobotState::AUTONOMOUS && last_robot_state == RobotState::DISABLED && !autoModePrg)
@@ -159,7 +163,12 @@ int main(int argc, char **argv)
             auto_hmi_signals = autoModePrg->stepStateMachine(traj_follow_active, traj_follow_complete, traj_id);
             auto_hmi_publisher.publish(auto_hmi_signals);
         }
-        
+
+        autonomous_configuration_options.autonomous_options = {"Climb", "Score Two + Climb"};
+        autonomous_configuration_options.game_pieces = {"Cone", "Cube"};
+        autonomous_configuration_options.starting_positions = {"Wall", "Middle", "Loading Side"};
+        auto_configuration_publisher.publish(autonomous_configuration_options);
+
         if (AutonomousHelper::getInstance().getRobotState() != RobotState::AUTONOMOUS && last_robot_state == RobotState::AUTONOMOUS)
         {
             ROS_WARN("Force stopping trajectory!");
